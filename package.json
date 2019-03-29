@@ -1,0 +1,31 @@
+{
+  "name": "video-share",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "client": "cd Client && yarn start",
+    "server": "cd Server && nodemon Server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "start": "cd Server && nodemon server.js",
+    "heroku-postbuild": "cd Client && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fazzbeast/videoShare.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fazzbeast/videoShare/issues"
+  },
+  "homepage": "https://github.com/fazzbeast/videoShare#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.10"
+  }
+}
