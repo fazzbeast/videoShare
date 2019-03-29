@@ -1,0 +1,11 @@
+.lead {
+    padding-left: 50px;
+}
+
+.jumbo {
+    height: 400px;
+    background-image: url('https://cdn.pixabay.com/photo/2016/01/15/12/02/editing-1141505_960_720.jpg');
+    background-position: bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
