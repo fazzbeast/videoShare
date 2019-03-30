@@ -1,7 +1,7 @@
 import React from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Button } from 'reactstrap';
 import './NavBar.css';
-
+import ModalClass from './../Modal/Modal';
 export default class NavBar extends React.Component {
 	constructor(props) {
 		super(props);
@@ -9,7 +9,10 @@ export default class NavBar extends React.Component {
 		this.toggle = this.toggle.bind(this);
 		this.state = {
 			isOpen: false,
-			isLoggedIn: false
+			isLoggedIn: false,
+			showModal: false,
+			loginClicked: false,
+			signupClicked: false
 		};
 	}
 	toggle() {
@@ -18,16 +21,24 @@ export default class NavBar extends React.Component {
 		});
 	}
 
-	onClickSignUp = () => {};
+	onClickSignUp = () => {
+		this.setState({ showModal: !this.state.showModal, signupClicked: !this.state.signupClicked });
+	};
+
+	onClickLogin = () => {
+		this.setState({ showModal: !this.state.showModal, loginClicked: !this.state.loginClicked });
+	};
 
 	render() {
 		const loginActions = (
 			<React.Fragment>
 				<NavItem className="optionalElements">
-					<Button className="mr-2">Sign-up</Button>
+					<Button className="mr-2" onClick={this.onClickSignUp}>
+						Sign-up
+					</Button>
 				</NavItem>
 				<NavItem className="optionalElements">
-					<Button>Login</Button>
+					<Button onClick={this.onClickLogin}>Login</Button>
 				</NavItem>
 			</React.Fragment>
 		);
@@ -45,6 +56,9 @@ export default class NavBar extends React.Component {
 					</Collapse>
 					{this.state.isLoggedIn ? Account : loginActions}
 				</Navbar>
+				{this.state.showModal ? (
+					<ModalClass onClickSignUp={this.onClickSignUp} onClickLogin={this.onClickLogin} {...this.state} />
+				) : null}
 			</div>
 		);
 	}
