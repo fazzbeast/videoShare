@@ -1,0 +1,14 @@
+.video-holder {
+    height: 600px;
+}
+
+.player-wrapper {
+    position: relative;
+    padding-top: 56.25%
+        /* Player ratio: 100 / (1280 / 720) */
+}
+
+.react-player {
+    position: absolute;
+    top: 5%;
+}
