@@ -1,26 +1,27 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Button } from 'reactstrap';
 import './NavBar.css';
 import ModalClass from './../Modal/Modal';
-export default class NavBar extends React.Component {
+import {withRouter} from 'react-router-dom';
+class NavBar extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.toggle = this.toggle.bind(this);
 		this.state = {
 			isOpen: false,
-			isLoggedIn: false,
 			showModal: false,
 			loginClicked: false,
 			signupClicked: false
 		};
 	}
+
 	toggle() {
 		this.setState({
 			isOpen: !this.state.isOpen
 		});
 	}
-
 	onClickSignUp = () => {
 		this.setState({ showModal: !this.state.showModal, signupClicked: !this.state.signupClicked });
 	};
@@ -46,6 +47,7 @@ export default class NavBar extends React.Component {
 		const Account = <Button>Account</Button>;
 		return (
 			<div>
+				
 				<Navbar color="dark" light expand="md">
 					<NavbarBrand href="/" className="text-white">
 						VidShare
@@ -63,3 +65,4 @@ export default class NavBar extends React.Component {
 		);
 	}
 }
+export default withRouter(NavBar);

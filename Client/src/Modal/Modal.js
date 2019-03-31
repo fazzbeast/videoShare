@@ -28,20 +28,62 @@ class ModalClass extends React.Component {
 	render() {
 		const register = (
 			<React.Fragment>
-				<ModalHeader toggle={this.toggle} charCode="Y">
-					Modal title
+				<ModalHeader toggle={this.toggle}>
+					Register a New Account
 				</ModalHeader>
 				<ModalBody>
-					<div class="input-group flex-nowrap">
+					<div class="input-group flex-nowrap mb-3">
 						<div class="input-group-prepend">
 							<span class="input-group-text" id="addon-wrapping">
-								@
+								Name
 							</span>
 						</div>
 						<input
 							type="text"
 							class="form-control"
-							placeholder="Username"
+							placeholder="Name"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+						/>
+					</div>
+					<div class="input-group flex-nowrap mb-3">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="addon-wrapping">
+								Email
+							</span>
+						</div>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Email"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+						/>
+					</div>
+					<div class="input-group flex-nowrap mb-3" >
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="addon-wrapping">
+								Password
+							</span>
+						</div>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Password"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+						/>
+					</div>
+					<div class="input-group flex-nowrap mb-3" >
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="addon-wrapping">
+								Re-enter Password
+							</span>
+						</div>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Password"
 							aria-label="Username"
 							aria-describedby="addon-wrapping"
 						/>
@@ -49,7 +91,7 @@ class ModalClass extends React.Component {
 				</ModalBody>
 				<ModalFooter>
 					<Button color="primary" onClick={this.toggle}>
-						Do Something
+						Sign-up
 					</Button>{' '}
 					<Button color="secondary" onClick={this.toggle}>
 						Cancel
@@ -60,19 +102,42 @@ class ModalClass extends React.Component {
 
 		const login = (
 			<React.Fragment>
-				<ModalHeader toggle={this.toggle} charCode="Y">
-					Modal title
+				<ModalHeader toggle={this.toggle} >
+					Login
 				</ModalHeader>
 				<ModalBody>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-					et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-					aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-					culpa qui officia deserunt mollit anim id est laborum.
+				<div class="input-group flex-nowrap mb-3" >
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="addon-wrapping">
+								Email
+							</span>
+						</div>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Password"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+						/>
+					</div>
+					<div class="input-group flex-nowrap mb-3" >
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="addon-wrapping">
+								Password
+							</span>
+						</div>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Password"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+						/>
+					</div>
 				</ModalBody>
 				<ModalFooter>
 					<Button color="primary" onClick={this.toggle}>
-						Do Something
+						Login
 					</Button>{' '}
 					<Button color="secondary" onClick={this.toggle}>
 						Cancel

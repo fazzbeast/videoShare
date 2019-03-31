@@ -4,6 +4,19 @@ import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } fr
 import './Home.css';
 
 export default class Home extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isLoggedIn: true,
+		};
+	}
+	componentDidUpdate(prevState){
+		console.log('prevState',prevState)
+		console.log('state',this.state.isLoggedIn)
+		if(this.state.isLoggedIn===true){
+			this.props.history.push('/Rooms')
+		}
+	}
 	render() {
 		return (
 			<div>
