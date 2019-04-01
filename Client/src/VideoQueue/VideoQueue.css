@@ -4,11 +4,18 @@
 
 .player-wrapper {
     position: relative;
-    padding-top: 56.25%
-        /* Player ratio: 100 / (1280 / 720) */
+    padding-top: 56.25%;
+    /* Player ratio: 100 / (1280 / 720) */
 }
 
 .react-player {
     position: absolute;
     top: 5%;
+}
+
+.thumbnail {
+    position: relative;
+    padding-top: 56.25%;
+    height: 64px;
+    width: 168px;
 }
