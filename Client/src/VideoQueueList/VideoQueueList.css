@@ -1,3 +1,8 @@
 .items {
+    width: 100%;
     overflow: hidden;
+    cursor: move;
+    display: flex;
+    justify-content: center;
+
 }

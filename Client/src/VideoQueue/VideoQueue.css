@@ -8,14 +8,19 @@
     /* Player ratio: 100 / (1280 / 720) */
 }
 
-.react-player {
+.react-player-main {
     position: absolute;
     top: 5%;
 }
 
+.react-player-sub {
+    position: absolute;
+    top: 0;
+    transform: translateY(10%)
+}
+
 .thumbnail {
     position: relative;
-    padding-top: 56.25%;
-    height: 64px;
-    width: 168px;
+    height: 94px;
+    width: 168px
 }
