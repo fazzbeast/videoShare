@@ -1,7 +1,6 @@
 const Pool = require('pg').Pool;
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
-const { check, validationResult } = require('express-validator/check');
 
 require('dotenv').config();
 
@@ -17,10 +16,7 @@ const hashPassword = (password) => {
 	return bcrypt.hash(password, 10);
 };
 
-const registerUser = (req, res) => {
-	const { name, email, password, matchPassword } = response.body;
-	//TODO:
-	//Add Form Validation
+const registerUser = (name, email, password, matchPassword) => {
 	const hash = hashPassword(password);
 	const id = uuid.v1();
 	pool.query(
@@ -36,10 +32,6 @@ const registerUser = (req, res) => {
 };
 
 module.exports = {
-	getUsers,
-	getUserById,
-	createUser,
-	updateUser,
-	strategy,
+	registerUser,
 	pool
 };

@@ -1,4 +1,4 @@
-export const FETCH_CITIES = 'FETCH_CITIES';
-export const NEW_FLIGHT = 'NEW_FLIGHT';
-export const SPECIFIC_CITY = 'SPECIFIC_CITY';
-export const CLEAR_CITY = 'CLEAR_CITY';
+export const REGISTER_USER = 'REGISTER_USER';
+export const LOGIN_USER = 'LOGIN_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
+export const GET_ROOMS = 'GET_ROOMS';

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import cityReducer from './cityReducer.js';
+import userReducer from './userReducer';
 
 export default combineReducers({
-	citys: cityReducer
+	userReducer
 });

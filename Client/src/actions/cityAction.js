@@ -1,16 +1,17 @@
-import { FETCH_CITIES, SPECIFIC_CITY, CLEAR_CITY, NEW_FLIGHT } from './types';
+import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER } from './types';
 import axios from 'axios';
-export const fetchCities = (value) => (dispatch) => {
-	axios(`/api/getCities`).then((cities) => {
+
+export const registerUser = (value) => (dispatch) => {
+	axios(`/registerUser`).then((cities) => {
 		dispatch({
-			type: FETCH_CITIES,
-			payload: cities.data.payload
+			type: REGISTER_USER,
+			payload: [] //TODO: ADD PAYLOAD
 		});
 	});
 };
 
-export const newFlight = (cityData) => (dispatch) => {
-	axios('/api/NewFlights', {
+export const loginUser = (cityData) => (dispatch) => {
+	axios('/auth/login', {
 		method: 'POST',
 		headers: {
 			'content-type': 'application/json'
@@ -19,14 +20,14 @@ export const newFlight = (cityData) => (dispatch) => {
 	})
 		.then(
 			dispatch({
-				type: NEW_FLIGHT,
+				type: LOGIN_USER,
 				payload: true
 			})
 		)
 		.catch((err) => console.log(err));
 };
 
-export const specificCity = (cityName) => (dispatch) => {
+export const logoutUser = (cityName) => (dispatch) => {
 	axios(`/api/fetchCity`, {
 		method: 'POST',
 		headers: {
@@ -38,21 +39,17 @@ export const specificCity = (cityName) => (dispatch) => {
 	}).then((cities) => {
 		if (cities.data.payload.length > 0) {
 			dispatch({
-				type: SPECIFIC_CITY,
-				payload: cities.data
-			});
-		} else {
-			dispatch({
-				type: SPECIFIC_CITY,
-				payload: []
+				type: LOGOUT_USER,
+				payload: [] //TODO: ADD PAYLOAD
 			});
 		}
 	});
 };
 
-export const clearCity = () => (dispatch) => {
+export const getRooms = () => (dispatch) => {
+	//TODO: Add Axios for /User Data
 	dispatch({
-		type: CLEAR_CITY,
-		payload: []
+		type: GET_ROOMS,
+		payload: [] //TODO: ADD PAYLOAD
 	});
 };

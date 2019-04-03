@@ -1,32 +1,31 @@
-import { FETCH_CITIES, NEW_FLIGHT, SPECIFIC_CITY, CLEAR_CITY } from '../actions/types';
+import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER } from '../actions/types';
 
 const initialState = {
-	cities: [],
-	flight: {},
-	query: [],
-	availableCities: [],
+	userInfo: [],
+	Rooms: {},
+	Videos: [],
 	uploadSuccess: false
 };
 
 export default function(state = initialState, action) {
 	switch (action.type) {
-		case FETCH_CITIES:
+		case GET_ROOMS:
 			return {
 				...state,
 				availableCities: action.payload
 			};
 
-		case NEW_FLIGHT:
+		case REGISTER_USER:
 			return {
 				...state,
 				uploadSuccess: action.payload
 			};
-		case SPECIFIC_CITY:
+		case LOGIN_USER:
 			return {
 				...state,
 				cities: action.payload
 			};
-		case CLEAR_CITY:
+		case LOGOUT_USER:
 			return {
 				...state,
 				cities: []
