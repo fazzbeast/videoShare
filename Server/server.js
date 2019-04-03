@@ -3,6 +3,14 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+
+const queries = require('./queries');
+const auth = require('./auth');
+require('./passport');
+
+app.use(passport.initialize());
+app.use('/auth', auth);
 // enable all CORS requests
 app.use(cors());
 

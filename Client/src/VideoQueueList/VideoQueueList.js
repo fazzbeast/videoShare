@@ -13,9 +13,15 @@ const VideoQueueList = React.forwardRef(({ Data, isDragging, connectDragSource, 
 	useImperativeHandle(ref, () => ({
 		getNode: () => elementRef.current
 	}));
+
+	const titleFetch = fetch(`http://noembed.com/embed?url=${Data.url.replace(':', '%3A')}`).then((data) => {
+		return data.json();
+	});
+	console.log(titleFetch);
 	return (
 		<div ref={elementRef} style={{ opacity: opacity }}>
 			<ListGroupItem style={{ height: '150px' }} className="items">
+				<div>{}</div>
 				<div className="thumbnail float-right">
 					<ReactPlayer
 						light={true}

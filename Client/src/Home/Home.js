@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import { Jumbotron, Container } from 'reactstrap';
-import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import './Home.css';
 
 export default class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLoggedIn: true,
+			isLoggedIn: true
 		};
 	}
-	componentDidUpdate(prevState){
-		console.log('prevState',prevState)
-		console.log('state',this.state.isLoggedIn)
-		if(this.state.isLoggedIn===true){
-			this.props.history.push('/Rooms')
+	componentDidUpdate(prevState) {
+		console.log('prevState', prevState);
+		console.log('state', this.state.isLoggedIn);
+		if (this.state.isLoggedIn === true) {
+			this.props.history.push('/Rooms');
 		}
 	}
 	render() {

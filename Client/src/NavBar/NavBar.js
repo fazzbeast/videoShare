@@ -1,9 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Button } from 'reactstrap';
 import './NavBar.css';
 import ModalClass from './../Modal/Modal';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 class NavBar extends React.Component {
 	constructor(props) {
 		super(props);
@@ -47,7 +46,6 @@ class NavBar extends React.Component {
 		const Account = <Button>Account</Button>;
 		return (
 			<div>
-				
 				<Navbar color="dark" light expand="md">
 					<NavbarBrand href="/" className="text-white">
 						VidShare
