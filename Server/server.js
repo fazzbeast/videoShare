@@ -31,13 +31,14 @@ app.post(
 		// check('password')
 		// 	.matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*)(?=.*[^a-zA-Z0-9]).{8,}$/, 'i')
 		// 	.withMessage('Password include one lowercase character, one uppercase, a number, and a special character'),
-		check('matchPassword').not().isEmpty().withMessage('Must re-enter password')
+		check('password2').not().isEmpty().withMessage('Must re-enter password')
 		// check('matchPassword').equals('matchPassword').withMessage('Password Must Match')
 	],
 	(req, res, next) => {
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
+			console.log(errors.array());
 			return res.status(422).json({ errors: errors.array() });
 		}
 		const { name, email, password, matchPassword } = req.body;
