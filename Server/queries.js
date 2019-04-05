@@ -9,24 +9,26 @@ const pool = new Pool({
 	host: process.env.DB_host,
 	database: process.env.DB,
 	password: process.env.DB_password,
-	port: process.env.DB_Port
+	port: process.env.DB_Port,
+	ssl: true
 });
 
 const hashPassword = (password) => {
 	return bcrypt.hash(password, 10);
 };
 
-const registerUser = (name, email, password, matchPassword) => {
-	const hash = hashPassword(password);
+const registerUser = async (name, email, password, matchPassword, res) => {
+	const hash = await hashPassword(password);
+	console.log(hash);
 	const id = uuid.v1();
 	pool.query(
-		'INSERT INTO user_info (id,name, email, password) VALUES (?,?,?,?)',
-		[ id, name, email, hash ],
+		'INSERT INTO "User_Info" ("Name", "Email", "Password") VALUES ($1, $2, $3)',
+		[ name, email, hash ],
 		(error, results) => {
 			if (error) {
-				res.status(401).send({ message: 'User already exists', error: error });
+				return res.status(401).send({ message: 'User already exists', error: error });
 			}
-			res.status(200).send({ message: 'Registration Complete' });
+			return res.status(200).send({ message: 'Registration Complete' });
 		}
 	);
 };

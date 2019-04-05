@@ -1,10 +1,12 @@
-import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER } from '../actions/types';
+import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, FORM_DATA } from '../actions/types';
 
 const initialState = {
 	userInfo: [],
 	Rooms: {},
 	Videos: [],
-	uploadSuccess: false
+	uploadSuccess: false,
+	registerData: [],
+	loginData: []
 };
 
 export default function(state = initialState, action) {
@@ -18,17 +20,17 @@ export default function(state = initialState, action) {
 		case REGISTER_USER:
 			return {
 				...state,
-				uploadSuccess: action.payload
+				registerData: action.payload
 			};
 		case LOGIN_USER:
 			return {
 				...state,
-				cities: action.payload
+				loginData: action.payload
 			};
 		case LOGOUT_USER:
 			return {
 				...state,
-				cities: []
+				Videos: []
 			};
 		default:
 			return state;

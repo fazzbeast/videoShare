@@ -1,29 +1,31 @@
-import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER } from './types';
+import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, FORM_DATA } from './types';
 import axios from 'axios';
 
 export const registerUser = (value) => (dispatch) => {
-	axios(`/registerUser`).then((cities) => {
-		dispatch({
-			type: REGISTER_USER,
-			payload: [] //TODO: ADD PAYLOAD
-		});
+	// axios(`/registerUser`).then((cities) => {
+	console.log('register');
+	dispatch({
+		type: REGISTER_USER,
+		payload: value
 	});
+	// });
 };
 
-export const loginUser = (cityData) => (dispatch) => {
+export const loginUser = (loginData) => (dispatch) => {
 	axios('/auth/login', {
 		method: 'POST',
 		headers: {
 			'content-type': 'application/json'
 		},
-		data: JSON.stringify(cityData)
+		data: JSON.stringify(loginData)
 	})
-		.then(
+		.then((data) => {
+			console.log(data);
 			dispatch({
 				type: LOGIN_USER,
-				payload: true
-			})
-		)
+				payload: loginData
+			});
+		})
 		.catch((err) => console.log(err));
 };
 
