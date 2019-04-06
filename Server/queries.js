@@ -25,7 +25,6 @@ const registerUser = async (name, email, password, matchPassword, res) => {
 		[ name, email, hash ],
 		(error, results) => {
 			const user = results.rows[0].Id;
-			console.log(results.rows[0].Id);
 			if (error) {
 				console.log(error);
 				return res.status(401).send({ message: 'User already exists', error: error });

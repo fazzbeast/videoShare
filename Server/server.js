@@ -38,7 +38,6 @@ app.post(
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
-			console.log(errors.array());
 			return res.status(422).json({ errors: errors.array() });
 		}
 		const { name, email, password, matchPassword } = req.body;

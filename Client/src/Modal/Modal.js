@@ -11,7 +11,7 @@ class ModalClass extends React.Component {
 			login: false,
 			register: false,
 			formValues: {
-				name: '2',
+				name: '',
 				email: '',
 				password: '',
 				password2: ''
@@ -54,6 +54,18 @@ class ModalClass extends React.Component {
 	onRegisterSubmit = (event) => {
 		event.preventDefault();
 		this.props.formSubmit(this.state.formValues);
+		this.setState({
+			formValues: {
+				name: '',
+				email: '',
+				password: '',
+				password2: ''
+			},
+			loginValues: {
+				email: '',
+				password: ''
+			}
+		});
 	};
 
 	onLoginSubmit = (event) => {

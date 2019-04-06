@@ -1,4 +1,4 @@
-import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, FORM_DATA } from '../actions/types';
+import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, FORM_DATA, SUCCESS } from '../actions/types';
 
 const initialState = {
 	userInfo: [],
@@ -31,6 +31,11 @@ export default function(state = initialState, action) {
 			return {
 				...state,
 				Videos: []
+			};
+		case SUCCESS:
+			return {
+				...state,
+				Success: !state.Success
 			};
 		default:
 			return state;

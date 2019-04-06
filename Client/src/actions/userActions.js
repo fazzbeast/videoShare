@@ -1,22 +1,34 @@
-import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, FORM_DATA } from './types';
+import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, FORM_DATA, SUCCESS, GET_ERRORS } from './types';
 import axios from 'axios';
 
 export const registerUser = (newUserData) => (dispatch) => {
-	console.log(newUserData);
 	axios('/registerUser', {
 		method: 'POST',
 		headers: {
 			'content-type': 'application/json'
 		},
 		data: JSON.stringify(newUserData)
-	}).then((cities) => {
-		console.log(cities);
-		localStorage.setItem('token', cities.data.token);
-		dispatch({
-			type: REGISTER_USER,
-			payload: newUserData
+	})
+		.then((payload) => {
+			console.log(payload);
+			if (payload.data.token) {
+				localStorage.setItem('token', payload.data.token);
+			}
+			dispatch({
+				type: REGISTER_USER,
+				payload: newUserData
+			});
+		})
+		.catch((err) => {
+			const errors = {
+				msg: err.response.data,
+				status: err.response.status
+			};
+			dispatch({
+				type: GET_ERRORS,
+				payload: errors
+			});
 		});
-	});
 };
 
 export const loginUser = (loginData) => (dispatch) => {
