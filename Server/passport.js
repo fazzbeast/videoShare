@@ -12,8 +12,9 @@ const opts = {
 module.exports = function(passport) {
 	passport.use(
 		new JWTstrategy(opts, function(payload, done) {
-			const email = payload.email;
-			pool.query('SELECT password FROM user_info WHERE email= ?', [ email ], (err, results, fields) => {
+			const email = payload.user;
+			console.log(payload);
+			pool.query('SELECT "Id" FROM "User_Info" WHERE "Email"= $1', [ email ], (err, results, fields) => {
 				if (err) {
 					return done(err);
 				} else {

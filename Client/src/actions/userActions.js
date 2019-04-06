@@ -1,4 +1,4 @@
-import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, FORM_DATA, SUCCESS, GET_ERRORS } from './types';
+import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, GET_ERRORS } from './types';
 import axios from 'axios';
 
 export const registerUser = (newUserData) => (dispatch) => {
@@ -40,6 +40,9 @@ export const loginUser = (loginData) => (dispatch) => {
 		data: JSON.stringify(loginData)
 	})
 		.then((data) => {
+			if (data.data.token) {
+				localStorage.setItem('token', data.data.token);
+			}
 			console.log(data);
 			dispatch({
 				type: LOGIN_USER,

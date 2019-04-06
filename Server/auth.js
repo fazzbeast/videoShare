@@ -17,8 +17,24 @@ router.post('/login', function(req, res, next) {
 			if (err) {
 				return res.send(err, 'err');
 			}
-			const token = jwt.sign({ user: user }, process.env.SECRET, { expiresIn: '24h' });
+			const token = jwt.sign({ user: req.body.email }, process.env.SECRET, { expiresIn: '1h' });
 			return res.json({ token: token });
+		});
+	})(req, res);
+});
+
+router.get('/user', function(req, res, next) {
+	passport.authenticate('jwt', { session: false }, (err, user, info) => {
+		if (err || !user) {
+			return res.status(500).json({
+				message: 'Something is not swag',
+				user: user,
+				error: err,
+				info: info
+			});
+		}
+		return res.status(200).json({
+			message: 'Signed In'
 		});
 	})(req, res);
 });
