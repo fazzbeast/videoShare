@@ -18,6 +18,7 @@ class VideoQueue extends Component {
 			]
 		};
 	}
+
 	render() {
 		const moveCard = (dragIndex, hoverIndex) => {
 			const dragCard = this.state.videos[dragIndex];
