@@ -5,9 +5,9 @@ import NavBar from './../NavBar/NavBar';
 import Rooms from '../Rooms/Rooms';
 import VideoQueue from '../VideoQueue/VideoQueue';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
-import { connect } from 'react-redux';
 import { loadUser } from '../actions/authActions';
 import store from '../store/store';
+import EmailConfirmed from '../EmailConfirmed/EmailConfirmed';
 class Routes extends Component {
 	componentDidMount() {
 		store.dispatch(loadUser());
@@ -23,9 +23,11 @@ class Routes extends Component {
 					</Route>
 					<PrivateRoute path="/Rooms" component={Rooms} />
 					<PrivateRoute path="/VideoQueue/:id" component={VideoQueue} />
+					<Route path="/user/confirmed/:id" component={EmailConfirmed} />
 				</Switch>
 			</div>
 		);
 	}
 }
-export default connect()(Routes);
+
+export default Routes;

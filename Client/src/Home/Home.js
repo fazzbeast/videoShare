@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
 import { Jumbotron, Container } from 'reactstrap';
 import './Home.css';
+import { connect } from 'react-redux';
 
-export default class Home extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			isLoggedIn: true
-		};
-	}
-	componentDidUpdate(prevState) {
-		console.log('prevState', prevState);
-		console.log('state', this.state.isLoggedIn);
-		if (this.state.isLoggedIn === true) {
+class Home extends Component {
+	componentDidMount() {
+		if (this.props.isLoggedIn === true) {
 			this.props.history.push('/Rooms');
 		}
 	}
@@ -29,3 +22,9 @@ export default class Home extends Component {
 		);
 	}
 }
+const mapStateToProps = (state) => {
+	return {
+		isLoggedIn: state.Auth.isAuthenticated
+	};
+};
+export default connect(mapStateToProps)(Home);

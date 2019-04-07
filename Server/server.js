@@ -7,6 +7,7 @@ var passport = require('passport');
 const { check, validationResult } = require('express-validator/check');
 const queries = require('./queries');
 const auth = require('./auth');
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(passport.initialize());
@@ -42,6 +43,6 @@ app.post(
 		}
 		const { name, email, password, matchPassword } = req.body;
 
-		queries.registerUser(name, email, password, matchPassword, res);
+		queries.registerUser(req, name, email, password, matchPassword, res);
 	}
 );

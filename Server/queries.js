@@ -1,9 +1,8 @@
 const Pool = require('pg').Pool;
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
-
+const emailSender = require('./email');
 const pool = new Pool({
 	user: process.env.DB_User,
 	host: process.env.DB_host,
@@ -17,20 +16,24 @@ const hashPassword = (password) => {
 	return bcrypt.hash(password, 10);
 };
 
-const registerUser = async (name, email, password, matchPassword, res) => {
+const registerUser = async (req, name, email, password, matchPassword, res) => {
 	const hash = await hashPassword(password);
 	const id = uuid.v1();
+	const emailToken = uuid.v1();
 	pool.query(
-		'INSERT INTO "User_Info" ("Name", "Email", "Password") VALUES ($1, $2, $3) RETURNING "Id"',
-		[ name, email, hash ],
+		'INSERT INTO "user_info" ("id","name", "email", "password","joined","updatedAt","emailConfirmationToken","passwordResetExpires") VALUES ($1, $2, $3,$4,$5,$6,$7,$8) RETURNING "id"',
+		[ id, name, email, hash, new Date(Date.now()), new Date(Date.now()), emailToken, Date.now() + 86400 * 1000 ],
 		(error, results) => {
-			const user = results.rows[0].Id;
 			if (error) {
-				console.log(error);
 				return res.status(401).send({ message: 'User already exists', error: error });
 			}
-			const token = jwt.sign({ user: user }, process.env.SECRET, { expiresIn: '24h' });
-			return res.status(200).send({ message: 'Registration Complete', token: token });
+			emailSender(req, email, name, emailToken, (err, data) => {
+				if (err) {
+					console.log(err);
+					return res.status(401).send({ message: 'Error sending email', error: err });
+				}
+				return res.status(200).send({ message: 'Registration Complete' });
+			});
 		}
 	);
 };

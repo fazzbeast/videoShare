@@ -1,4 +1,4 @@
-import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, GET_ERRORS } from './types';
+import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, GET_ERRORS, GET_EMAIL_TOKEN, AUTH_ERROR } from './types';
 import axios from 'axios';
 
 export const registerUser = (newUserData) => (dispatch) => {
@@ -76,5 +76,22 @@ export const getRooms = () => (dispatch) => {
 	dispatch({
 		type: GET_ROOMS,
 		payload: [] //TODO: ADD PAYLOAD
+	});
+};
+
+export const getEmailToken = (token) => (dispatch) => {
+	axios.get(`/auth/confirmation/${token}`).then((err, data) => {
+		if (err) {
+			dispatch({
+				type: AUTH_ERROR,
+				payload: err
+			});
+		} else {
+			console.log(token);
+			dispatch({
+				type: GET_EMAIL_TOKEN,
+				payload: true
+			});
+		}
 	});
 };

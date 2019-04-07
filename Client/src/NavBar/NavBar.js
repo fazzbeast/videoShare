@@ -3,10 +3,10 @@ import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Button } fr
 import './NavBar.css';
 import ModalClass from './../Modal/Modal';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 class NavBar extends React.Component {
 	constructor(props) {
 		super(props);
-
 		this.toggle = this.toggle.bind(this);
 		this.state = {
 			isOpen: false,
@@ -29,6 +29,8 @@ class NavBar extends React.Component {
 		this.setState({ showModal: !this.state.showModal, loginClicked: !this.state.loginClicked });
 	};
 
+	loggedOut = () => {};
+
 	render() {
 		const loginActions = (
 			<React.Fragment>
@@ -43,7 +45,16 @@ class NavBar extends React.Component {
 			</React.Fragment>
 		);
 
-		const Account = <Button>Account</Button>;
+		const Account = (
+			<React.Fragment>
+				<NavItem className="optionalElements">
+					<Button className="mr-2">Log Out</Button>
+				</NavItem>
+				<NavItem className="optionalElements">
+					<Button>Account</Button>
+				</NavItem>
+			</React.Fragment>
+		);
 		return (
 			<div>
 				<Navbar color="dark" light expand="md">
@@ -54,7 +65,7 @@ class NavBar extends React.Component {
 					<Collapse isOpen={this.state.isOpen} navbar>
 						<Nav className="ml-auto" navbar />
 					</Collapse>
-					{this.state.isLoggedIn ? Account : loginActions}
+					{this.props.isLoggedIn ? Account : loginActions}
 				</Navbar>
 				{this.state.showModal ? (
 					<ModalClass onClickSignUp={this.onClickSignUp} onClickLogin={this.onClickLogin} {...this.state} />
@@ -63,4 +74,10 @@ class NavBar extends React.Component {
 		);
 	}
 }
-export default withRouter(NavBar);
+
+const mapStateToProps = (state) => {
+	return {
+		isLoggedIn: state.Auth.isAuthenticated
+	};
+};
+export default connect(mapStateToProps)(withRouter(NavBar));

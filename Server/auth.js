@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const pool = require('./queries').pool;
 
 router.post('/login', function(req, res, next) {
 	passport.authenticate('local', { session: false }, (err, user, info) => {
@@ -37,6 +38,21 @@ router.get('/user', function(req, res, next) {
 			message: 'Signed In'
 		});
 	})(req, res);
+});
+
+router.get('/confirmation/:id', function(req, res, next) {
+	const token = req.params.id;
+	pool.query(
+		'UPDATE  "user_info" SET "isEmailConfirmed"=true  WHERE "emailConfirmationToken"=$1 AND "isEmailedConfirmed"=false RETURNING "email"',
+		[ token ],
+		(error, results) => {
+			const user = results;
+			if (error) {
+				return res.status(401).send({ message: 'User already exists', error: error });
+			}
+			return res.status(200).send({ message: 'Registration Complete' });
+		}
+	);
 });
 
 module.exports = router;

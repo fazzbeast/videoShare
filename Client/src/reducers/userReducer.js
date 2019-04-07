@@ -1,4 +1,4 @@
-import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, FORM_DATA, SUCCESS } from '../actions/types';
+import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, SUCCESS, GET_EMAIL_TOKEN } from '../actions/types';
 
 const initialState = {
 	userInfo: [],
@@ -6,11 +6,17 @@ const initialState = {
 	Videos: [],
 	uploadSuccess: false,
 	registerData: [],
-	loginData: []
+	loginData: [],
+	confirmationToken: null
 };
 
 export default function(state = initialState, action) {
 	switch (action.type) {
+		case GET_EMAIL_TOKEN:
+			return {
+				...state,
+				confirmationToken: action.payload
+			};
 		case GET_ROOMS:
 			return {
 				...state,
