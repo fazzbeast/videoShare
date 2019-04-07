@@ -13,7 +13,7 @@ module.exports = function(passport) {
 	passport.use(
 		new JWTstrategy(opts, function(payload, done) {
 			const email = payload.user;
-			pool.query('SELECT "id" FROM "user_Info" WHERE "email"= $1', [ email ], (err, results, fields) => {
+			pool.query('SELECT "id" FROM "user_info" WHERE "email"= $1', [ email ], (err, results, fields) => {
 				if (err) {
 					return done(err);
 				} else {
@@ -30,7 +30,7 @@ module.exports = function(passport) {
 				passwordField: 'password'
 			},
 			(email, password, done) => {
-				pool.query('select * from "user_Info" where "email" = $1', [ email ], (err, data) => {
+				pool.query('select * from "user_info" where "email" = $1', [ email ], (err, data) => {
 					if (err) {
 						return done(null, false, { message: 'Email not Found', error: err });
 					}

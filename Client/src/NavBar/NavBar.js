@@ -4,6 +4,7 @@ import './NavBar.css';
 import ModalClass from './../Modal/Modal';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { logoutUser } from '../actions/userActions';
 class NavBar extends React.Component {
 	constructor(props) {
 		super(props);
@@ -29,7 +30,10 @@ class NavBar extends React.Component {
 		this.setState({ showModal: !this.state.showModal, loginClicked: !this.state.loginClicked });
 	};
 
-	loggedOut = () => {};
+	loggedOut = () => {
+		console.log(this.props);
+		this.props.logoutUser();
+	};
 
 	render() {
 		const loginActions = (
@@ -48,7 +52,9 @@ class NavBar extends React.Component {
 		const Account = (
 			<React.Fragment>
 				<NavItem className="optionalElements">
-					<Button className="mr-2">Log Out</Button>
+					<Button className="mr-2" onClick={this.loggedOut}>
+						Log Out
+					</Button>
 				</NavItem>
 				<NavItem className="optionalElements">
 					<Button>Account</Button>
@@ -80,4 +86,5 @@ const mapStateToProps = (state) => {
 		isLoggedIn: state.Auth.isAuthenticated
 	};
 };
-export default connect(mapStateToProps)(withRouter(NavBar));
+
+export default connect(mapStateToProps, { logoutUser })(withRouter(NavBar));

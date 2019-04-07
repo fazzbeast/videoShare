@@ -10,7 +10,6 @@ export const registerUser = (newUserData) => (dispatch) => {
 		data: JSON.stringify(newUserData)
 	})
 		.then((payload) => {
-			console.log(payload);
 			if (payload.data.token) {
 				localStorage.setItem('token', payload.data.token);
 			}
@@ -43,31 +42,17 @@ export const loginUser = (loginData) => (dispatch) => {
 			if (data.data.token) {
 				localStorage.setItem('token', data.data.token);
 			}
-			console.log(data);
 			dispatch({
 				type: LOGIN_USER,
-				payload: loginData
+				payload: data.message
 			});
 		})
 		.catch((err) => console.log(err));
 };
 
-export const logoutUser = (cityName) => (dispatch) => {
-	axios(`/api/fetchCity`, {
-		method: 'POST',
-		headers: {
-			'content-type': 'application/json'
-		},
-		data: {
-			cityName: cityName
-		}
-	}).then((cities) => {
-		if (cities.data.payload.length > 0) {
-			dispatch({
-				type: LOGOUT_USER,
-				payload: [] //TODO: ADD PAYLOAD
-			});
-		}
+export const logoutUser = () => (dispatch) => {
+	return dispatch({
+		type: LOGOUT_USER
 	});
 };
 
@@ -87,7 +72,6 @@ export const getEmailToken = (token) => (dispatch) => {
 				payload: err
 			});
 		} else {
-			console.log(token);
 			dispatch({
 				type: GET_EMAIL_TOKEN,
 				payload: true

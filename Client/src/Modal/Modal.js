@@ -66,11 +66,13 @@ class ModalClass extends React.Component {
 				password: ''
 			}
 		});
+		this.toggle();
 	};
 
 	onLoginSubmit = (event) => {
 		event.preventDefault();
 		this.props.loginSubmit(this.state.loginValues);
+		this.toggle();
 	};
 	render() {
 		const register = (
