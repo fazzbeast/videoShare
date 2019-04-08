@@ -1,4 +1,4 @@
-import { GET_ROOMS, REGISTER_USER, LOGIN_USER, SUCCESS, GET_EMAIL_TOKEN } from '../actions/types';
+import { GET_ROOMS, REGISTER_USER, CREATE_ROOM, SUCCESS, GET_EMAIL_TOKEN, DELETE_ROOM } from '../actions/types';
 
 const initialState = {
 	userInfo: [],
@@ -7,7 +7,8 @@ const initialState = {
 	uploadSuccess: false,
 	registerData: [],
 	loginData: [],
-	confirmationToken: null
+	confirmationToken: null,
+	createRoomData: []
 };
 
 export default function(state = initialState, action) {
@@ -20,13 +21,22 @@ export default function(state = initialState, action) {
 		case GET_ROOMS:
 			return {
 				...state,
-				availableCities: action.payload
+				createRoomData: action.payload
 			};
-
+		case CREATE_ROOM:
+			return {
+				...state,
+				createRoomData: action.payload
+			};
+		case DELETE_ROOM:
+			return {
+				...state,
+				createRoomData: action.payload
+			};
 		case REGISTER_USER:
 			return {
 				...state,
-				registerData: action.payload
+				Videos: action.payload
 			};
 
 		case SUCCESS:

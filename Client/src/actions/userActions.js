@@ -1,4 +1,13 @@
-import { GET_ROOMS, REGISTER_USER, LOGIN_USER, LOGOUT_USER, GET_ERRORS, GET_EMAIL_TOKEN, AUTH_ERROR } from './types';
+import {
+	GET_ROOMS,
+	REGISTER_USER,
+	LOGIN_USER,
+	LOGOUT_USER,
+	GET_ERRORS,
+	GET_EMAIL_TOKEN,
+	AUTH_ERROR,
+	DELETE_ROOM
+} from './types';
 import axios from 'axios';
 
 export const registerUser = (newUserData) => (dispatch) => {
@@ -56,12 +65,37 @@ export const logoutUser = () => (dispatch) => {
 	});
 };
 
-export const getRooms = () => (dispatch) => {
-	//TODO: Add Axios for /User Data
-	dispatch({
-		type: GET_ROOMS,
-		payload: [] //TODO: ADD PAYLOAD
-	});
+export const getRooms = (roomData) => (dispatch, getState) => {
+	const token = getState().Auth.token;
+	const headers = {
+		'Content-Type': 'application/json'
+	};
+
+	if (token) {
+		headers['Authorization'] = `bearer ${token}`;
+	}
+
+	axios('/auth/createRoom', {
+		method: 'POST',
+		headers,
+		data: JSON.stringify({ name: roomData })
+	})
+		.then((res) => {
+			dispatch({
+				type: GET_ROOMS,
+				payload: res.data.data
+			});
+		})
+		.catch((err) => {
+			const errors = {
+				msg: err.response.data,
+				status: err.response.status
+			};
+			dispatch({
+				type: GET_ERRORS,
+				payload: errors
+			});
+		});
 };
 
 export const getEmailToken = (token) => (dispatch) => {
@@ -78,4 +112,36 @@ export const getEmailToken = (token) => (dispatch) => {
 			});
 		}
 	});
+};
+
+export const roomDelete = (id) => (dispatch, getState) => {
+	const token = getState().Auth.token;
+	const headers = {
+		'Content-Type': 'application/json'
+	};
+
+	if (token) {
+		headers['Authorization'] = `bearer ${token}`;
+	}
+	axios('/auth/DeleteRoom', {
+		method: 'POST',
+		headers,
+		data: JSON.stringify({ roomID: id })
+	})
+		.then((res) => {
+			dispatch({
+				type: DELETE_ROOM,
+				payload: res.data.data
+			});
+		})
+		.catch((err) => {
+			const errors = {
+				msg: err.response.data,
+				status: err.response.status
+			};
+			dispatch({
+				type: GET_ERRORS,
+				payload: errors
+			});
+		});
 };

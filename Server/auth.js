@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const pool = require('./queries').pool;
-
+const uuid = require('uuid');
 router.post('/login', function(req, res, next) {
 	passport.authenticate('local', { session: false }, (err, user, info) => {
 		if (err || !user) {
@@ -34,8 +34,21 @@ router.get('/user', function(req, res, next) {
 				info: info
 			});
 		}
-		return res.status(200).json({
-			message: 'Signed In'
+		const id = user.rows[0].id;
+		pool.query(`SELECT * FROM "joinedRooms" WHERE "id"=$1 `, [ id ], (error, result) => {
+			if (error) {
+				console.log(error);
+				return res.status(500).json({
+					message: 'Could not grab Rooms',
+					error: err
+				});
+			} else {
+				return res.status(200).json({
+					message: 'Signed In',
+					user: user.rows[0].id,
+					data: result.rows
+				});
+			}
 		});
 	})(req, res);
 });
@@ -53,6 +66,87 @@ router.get('/confirmation/:id', function(req, res, next) {
 			return res.status(200).send({ message: 'Registration Complete' });
 		}
 	);
+});
+
+router.post('/createRoom', function(req, res, next) {
+	passport.authenticate('jwt', { session: false }, (err, user, info) => {
+		const id = user.rows[0].id;
+		if (err || !user) {
+			return res.status(500).json({
+				message: 'Something is not swag',
+				user: user,
+				error: err,
+				info: info
+			});
+		}
+		const roomName = req.body.name;
+		roomID = uuid.v1();
+		pool.query(
+			`INSERT INTO "joinedRooms" ("id","roomID","roomName") VALUES ($1,$2,$3); `,
+			[ id, roomID, roomName ],
+			(error, results) => {
+				if (error) {
+					return res.status(500).json({
+						message: 'Could not Create Room',
+						error: err
+					});
+				} else {
+					pool.query(`SELECT * FROM "joinedRooms" WHERE "id"=$1 `, [ id ], (error, result) => {
+						if (error) {
+							console.log(error);
+							return res.status(500).json({
+								message: 'Could not grab Rooms',
+								error: err
+							});
+						} else {
+							return res.status(200).json({
+								message: 'Room Added and data returned',
+								data: result.rows
+							});
+						}
+					});
+				}
+			}
+		);
+	})(req, res);
+});
+
+router.post('/DeleteRoom', function(req, res, next) {
+	passport.authenticate('jwt', { session: false }, (err, user, info) => {
+		const id = user.rows[0].id;
+		if (err || !user) {
+			return res.status(500).json({
+				message: 'Something is not swag',
+				user: user,
+				error: err,
+				info: info
+			});
+		}
+		const roomID = req.body.roomID;
+		pool.query(`DELETE FROM "joinedRooms" WHERE "roomID"=$1 `, [ roomID ], (error, results) => {
+			if (error) {
+				return res.status(500).json({
+					message: 'Could not delete Room',
+					error: err
+				});
+			} else {
+				pool.query(`SELECT * FROM "joinedRooms" WHERE "id"=$1 `, [ id ], (error, result) => {
+					if (error) {
+						console.log(error);
+						return res.status(500).json({
+							message: 'Could not grab Rooms',
+							error: err
+						});
+					} else {
+						return res.status(200).json({
+							message: 'Room Added data returned',
+							data: result.rows
+						});
+					}
+				});
+			}
+		});
+	})(req, res);
 });
 
 module.exports = router;

@@ -37,33 +37,11 @@ class RoomModal extends React.Component {
 		this.setState({ formValues: formInputs });
 	};
 
-	onRegisterSubmit = (event) => {
-		event.preventDefault();
-		this.props.formSubmit(this.state.formValues);
-		this.setState({
-			formValues: {
-				name: '',
-				email: '',
-				password: '',
-				password2: ''
-			},
-			loginValues: {
-				email: '',
-				password: ''
-			}
-		});
-		this.toggle();
-	};
 	toggle = () => {
 		this.setState((prevState) => ({
 			modal: !prevState.modal
 		}));
 		this.props.onClickCreateRoom();
-	};
-	onLoginSubmit = (event) => {
-		event.preventDefault();
-		this.props.loginSubmit(this.state.loginValues);
-		this.toggle();
 	};
 	render() {
 		const addRoom = (
@@ -83,13 +61,13 @@ class RoomModal extends React.Component {
 							placeholder="Name"
 							aria-label="Username"
 							aria-describedby="addon-wrapping"
-							onChange={(event) => this.onChangeEventRegister(event)}
+							onChange={(event) => this.props.updateValues(event)}
 						/>
 					</div>
 				</ModalBody>
 				<ModalFooter>
-					<Button color="primary" onClick={this.onLoginSubmit}>
-						Login
+					<Button color="primary" onClick={this.props.uploadForm}>
+						Submit
 					</Button>{' '}
 					<Button color="secondary" onClick={this.toggle}>
 						Cancel

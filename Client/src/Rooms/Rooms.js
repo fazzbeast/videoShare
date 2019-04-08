@@ -4,25 +4,43 @@ import { withRouter } from 'react-router-dom';
 import './Rooms.css';
 import RoomsCard from '../RoomsCard/RoomsCard';
 import RoomModal from '../RoomModal/RoomModal';
+import { connect } from 'react-redux';
+import { getRooms, roomDelete } from '../actions/userActions';
 class Rooms extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showModal: false
+			showModal: false,
+			form: {
+				name: null
+			}
 		};
 	}
 	onClickCreateRoom = () => {
 		this.setState({ showModal: !this.state.showModal });
 	};
+	onCreateRoomSubmit = () => {
+		this.props.getRooms(this.state.form.name);
+		this.setState({ form: { name: '' }, showModal: !this.state.showModal });
+	};
 	onClick = (e) => {
 		e.stopPropagation();
 		this.props.history.push('/VideoQueue/1');
 	};
-	onClick2 = (e, d) => {
+	onChange = (event) => {
+		let updateForm = {
+			...this.state.form
+		};
+		updateForm[event.target.name] = event.target.value;
+		this.setState({ form: updateForm });
+	};
+
+	onDelete = (e, id) => {
+		console.log('hi');
 		e.stopPropagation();
+		this.props.deleteRoom(id);
 	};
 	render() {
-		const arr = { divName: 'Gaming Videos' };
 		return (
 			<div className="m-5">
 				<div className="my-2">
@@ -32,11 +50,37 @@ class Rooms extends Component {
 					</Button>{' '}
 				</div>
 				<ListGroup className="clearfix">
-					<RoomsCard Data={arr} />
+					<RoomsCard roomData={this.props.data} onDeletes={this.onDelete} />
 				</ListGroup>
-				{this.state.showModal ? <RoomModal onClickCreateRoom={this.onClickCreateRoom} {...this.state} /> : null}
+				{this.state.showModal ? (
+					<RoomModal
+						onClickCreateRoom={this.onClickCreateRoom}
+						updateValues={this.onChange}
+						uploadForm={this.onCreateRoomSubmit}
+						{...this.state}
+					/>
+				) : null}
 			</div>
 		);
 	}
 }
-export default withRouter(Rooms);
+
+const mapStateToProps = (state) => {
+	return {
+		data: state.userReducer.createRoomData
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getRooms: (roomInfo) => {
+			dispatch(getRooms(roomInfo));
+		},
+
+		deleteRoom: (id) => {
+			dispatch(roomDelete(id));
+		}
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Rooms));

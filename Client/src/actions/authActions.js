@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { USER_LOADED, USER_LOADING, AUTH_ERROR } from './types';
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, GET_ROOMS } from './types';
 
 //check token and load user
 export const loadUser = () => (dispatch, getState) => {
@@ -30,8 +30,13 @@ export const loadUser = () => (dispatch, getState) => {
 				type: USER_LOADED,
 				payload: res.data
 			});
+			dispatch({
+				type: GET_ROOMS,
+				payload: res.data.data
+			});
 		})
 		.catch((err) => {
+			console.log(err);
 			const errors = {
 				msg: err.response.data,
 				status: err.response.status
