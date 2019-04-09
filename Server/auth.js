@@ -18,8 +18,19 @@ router.post('/login', function(req, res, next) {
 			if (err) {
 				return res.send(err, 'err');
 			}
+			const id = user.rows[0].id;
 			const token = jwt.sign({ user: req.body.email }, process.env.SECRET, { expiresIn: '24h' });
-			return res.json({ token: token });
+			pool.query(`SELECT * FROM "joinedRooms" WHERE "id"=$1 `, [ id ], (error, result) => {
+				if (error) {
+					console.log(error);
+					return res.status(500).json({
+						message: 'Could not grab Rooms',
+						error: err
+					});
+				} else {
+					return res.json({ token: token, data: result.rows });
+				}
+			});
 		});
 	})(req, res);
 });

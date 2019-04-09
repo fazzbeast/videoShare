@@ -21,9 +21,10 @@ class Routes extends Component {
 					<Route exact path="/">
 						<Redirect to="/Home" />
 					</Route>
-					<PrivateRoute path="/Rooms" component={Rooms} />
-					<PrivateRoute path="/VideoQueue/:id" component={VideoQueue} />
+
+					<Route path="/VideoQueue/:id" component={VideoQueue} />
 					<Route path="/user/confirmed/:id" component={EmailConfirmed} />
+					<PrivateRoute exact path="/Rooms" component={Rooms} />
 				</Switch>
 			</div>
 		);

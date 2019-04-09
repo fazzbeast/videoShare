@@ -38,7 +38,7 @@ module.exports = function(passport) {
 						if (err) {
 							return done(null, false, { message: 'Password or Email incorrect', error: err });
 						} else {
-							return done(null, true, { message: 'Logged in Successfully' });
+							return done(null, data, { message: 'Logged in Successfully' });
 						}
 					});
 				});

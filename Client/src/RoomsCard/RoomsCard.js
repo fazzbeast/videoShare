@@ -3,12 +3,30 @@ import { ListGroupItem, Button } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 class RoomsCard extends Component {
 	onClick = (id) => {
-		this.props.history.push(`/VideoQueue/${id}`);
+		this.props.history.push(`/VideoQueue/441e9d80-599f-11e9-90d2-611b326661a8`);
+	};
+
+	add = (id) => {
+		const name = `http://localhost:3000/VideoQueue/${id}`;
+		return <input type="text" value={name} className="float-right" readOnly onClick={(e) => e.stopPropagation()} />;
+	};
+
+	showShare = (e) => {
+		e.stopPropagation();
+		this.props.showShare();
 	};
 	render() {
+		const shared = (id) =>
+			this.props.valueShare ? (
+				this.add(id)
+			) : (
+				<Button onClick={(e) => this.showShare(e)} className="float-right" color="primary" size="sm">
+					Share
+				</Button>
+			);
 		const data = this.props.roomData || [];
 		const display = data.map((item) => (
-			<ListGroupItem key={item.roomID} className="pointer" onClick={(event) => this.onClick(item.roomID)}>
+			<ListGroupItem key={item.roomID} className="pointer" onClick={() => this.onClick(item.roomID)}>
 				<h4 className="float-left">{item.roomName}</h4>
 				<Button
 					size="sm"
@@ -16,9 +34,7 @@ class RoomsCard extends Component {
 					onClick={(e) => this.props.onDeletes(e, item.roomID)}>
 					Delete
 				</Button>
-				<Button onClick={this.onClick2} className="float-right" color="primary" size="sm">
-					Share
-				</Button>
+				{shared(item.roomID)}
 			</ListGroupItem>
 		));
 		const noVids = (

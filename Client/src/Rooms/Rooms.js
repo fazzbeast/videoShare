@@ -13,7 +13,8 @@ class Rooms extends Component {
 			showModal: false,
 			form: {
 				name: null
-			}
+			},
+			showShare: false
 		};
 	}
 	onClickCreateRoom = () => {
@@ -23,10 +24,7 @@ class Rooms extends Component {
 		this.props.getRooms(this.state.form.name);
 		this.setState({ form: { name: '' }, showModal: !this.state.showModal });
 	};
-	onClick = (e) => {
-		e.stopPropagation();
-		this.props.history.push('/VideoQueue/1');
-	};
+
 	onChange = (event) => {
 		let updateForm = {
 			...this.state.form
@@ -36,9 +34,12 @@ class Rooms extends Component {
 	};
 
 	onDelete = (e, id) => {
-		console.log('hi');
 		e.stopPropagation();
 		this.props.deleteRoom(id);
+	};
+
+	onShare = () => {
+		this.setState({ showShare: !this.state.showShare });
 	};
 	render() {
 		return (
@@ -50,7 +51,12 @@ class Rooms extends Component {
 					</Button>{' '}
 				</div>
 				<ListGroup className="clearfix">
-					<RoomsCard roomData={this.props.data} onDeletes={this.onDelete} />
+					<RoomsCard
+						roomData={this.props.data}
+						onDeletes={this.onDelete}
+						showShare={this.onShare}
+						valueShare={this.state.showShare}
+					/>
 				</ListGroup>
 				{this.state.showModal ? (
 					<RoomModal

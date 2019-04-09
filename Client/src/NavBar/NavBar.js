@@ -16,11 +16,6 @@ class NavBar extends React.Component {
 			signupClicked: false
 		};
 	}
-	componentDidUpdate(prevProps) {
-		if (this.props.isLoggedIn !== prevProps.isLoggedIn) {
-			this.props.history.push('/Rooms');
-		}
-	}
 
 	toggle() {
 		this.setState({

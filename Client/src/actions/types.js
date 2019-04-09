@@ -11,3 +11,4 @@ export const AUTH_ERROR = 'AUTH_ERROR';
 export const GET_EMAIL_TOKEN = 'GET_EMAIL_TOKEN';
 export const CREATE_ROOM = 'CREATE_ROOM';
 export const DELETE_ROOM = 'DELETE_ROOM';
+export const CLEAR_DATA = 'CLEAR_DATA';

@@ -6,7 +6,8 @@ import {
 	GET_ERRORS,
 	GET_EMAIL_TOKEN,
 	AUTH_ERROR,
-	DELETE_ROOM
+	DELETE_ROOM,
+	CLEAR_DATA
 } from './types';
 import axios from 'axios';
 
@@ -55,13 +56,20 @@ export const loginUser = (loginData) => (dispatch) => {
 				type: LOGIN_USER,
 				payload: data.message
 			});
+			dispatch({
+				type: GET_ROOMS,
+				payload: data.data.data
+			});
 		})
 		.catch((err) => console.log(err));
 };
 
 export const logoutUser = () => (dispatch) => {
-	return dispatch({
+	dispatch({
 		type: LOGOUT_USER
+	});
+	dispatch({
+		type: CLEAR_DATA
 	});
 };
 

@@ -1,4 +1,12 @@
-import { GET_ROOMS, REGISTER_USER, CREATE_ROOM, SUCCESS, GET_EMAIL_TOKEN, DELETE_ROOM } from '../actions/types';
+import {
+	GET_ROOMS,
+	REGISTER_USER,
+	CREATE_ROOM,
+	SUCCESS,
+	GET_EMAIL_TOKEN,
+	DELETE_ROOM,
+	CLEAR_DATA
+} from '../actions/types';
 
 const initialState = {
 	userInfo: [],
@@ -43,6 +51,12 @@ export default function(state = initialState, action) {
 			return {
 				...state,
 				Success: !state.Success
+			};
+
+		case CLEAR_DATA:
+			return {
+				...state,
+				createRoomData: []
 			};
 		default:
 			return state;
