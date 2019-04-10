@@ -5,6 +5,7 @@
 .player-wrapper {
     position: relative;
     padding-top: 56.25%;
+    margin-bottom: 10%;
     /* Player ratio: 100 / (1280 / 720) */
 }
 

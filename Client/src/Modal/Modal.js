@@ -119,7 +119,7 @@ class ModalClass extends React.Component {
 						</div>
 						<input
 							name="password"
-							type="text"
+							type="password"
 							className="form-control"
 							placeholder="Password"
 							aria-label="Username"
@@ -135,7 +135,7 @@ class ModalClass extends React.Component {
 						</div>
 						<input
 							name="password2"
-							type="text"
+							type="password"
 							className="form-control"
 							placeholder="Password"
 							aria-label="Username"
@@ -167,7 +167,7 @@ class ModalClass extends React.Component {
 						</div>
 						<input
 							name="email"
-							type="text"
+							type="password"
 							className="form-control"
 							placeholder="Password"
 							aria-label="Username"

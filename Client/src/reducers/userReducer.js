@@ -5,7 +5,9 @@ import {
 	SUCCESS,
 	GET_EMAIL_TOKEN,
 	DELETE_ROOM,
-	CLEAR_DATA
+	CLEAR_DATA,
+	GET_VIDEOS,
+	DELETE_VIDEO
 } from '../actions/types';
 
 const initialState = {
@@ -21,6 +23,16 @@ const initialState = {
 
 export default function(state = initialState, action) {
 	switch (action.type) {
+		case GET_VIDEOS:
+			return {
+				...state,
+				Videos: action.payload
+			};
+		case DELETE_VIDEO:
+			return {
+				...state,
+				Videos: this.Videos.filter((video) => video.url !== action.payload)
+			};
 		case GET_EMAIL_TOKEN:
 			return {
 				...state,

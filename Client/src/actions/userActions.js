@@ -7,9 +7,19 @@ import {
 	GET_EMAIL_TOKEN,
 	AUTH_ERROR,
 	DELETE_ROOM,
-	CLEAR_DATA
+	CLEAR_DATA,
+	GET_VIDEOS,
+	DELETE_VIDEO
 } from './types';
 import axios from 'axios';
+
+export const getVideos = () => (dispatch) => {
+	//TODO: get videos
+};
+
+export const deleteVideos = () => (dispatch) => {
+	//TODO: get videos
+};
 
 export const registerUser = (newUserData) => (dispatch) => {
 	axios('/registerUser', {

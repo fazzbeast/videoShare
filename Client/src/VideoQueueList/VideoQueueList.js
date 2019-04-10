@@ -15,9 +15,8 @@ const VideoQueueList = React.forwardRef(({ Data, isDragging, connectDragSource, 
 	}));
 
 	const titleFetch = fetch(`http://noembed.com/embed?url=${Data.url.replace(':', '%3A')}`).then((data) => {
-		return data.json();
+		return data;
 	});
-	console.log(titleFetch);
 	return (
 		<div ref={elementRef} style={{ opacity: opacity }}>
 			<ListGroupItem style={{ height: '150px' }} className="items">

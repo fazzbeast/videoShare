@@ -3,7 +3,7 @@ import { ListGroupItem, Button } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 class RoomsCard extends Component {
 	onClick = (id) => {
-		this.props.history.push(`/VideoQueue/441e9d80-599f-11e9-90d2-611b326661a8`);
+		this.props.history.push(`/VideoQueue/${id}`);
 	};
 
 	add = (id) => {
