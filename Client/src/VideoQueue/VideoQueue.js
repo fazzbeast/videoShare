@@ -6,6 +6,9 @@ import ReactPlayer from 'react-player';
 import './VideoQueue.css';
 import VideoQueueList from './../VideoQueueList/VideoQueueList';
 import VideoControls from '../videoControls/videoControls';
+import screenfull from 'screenfull';
+import { findDOMNode } from 'react-dom';
+
 class VideoQueue extends Component {
 	constructor(props) {
 		super(props);
@@ -18,7 +21,9 @@ class VideoQueue extends Component {
 			newVideo: { url: '' },
 			queue: [],
 			input: '',
-			playing: true
+			playing: false,
+			played: 0,
+			duration: 0
 		};
 	}
 
@@ -50,7 +55,46 @@ class VideoQueue extends Component {
 			});
 		}
 	};
+
+	onClickFullScreen = () => {
+		screenfull.request(findDOMNode(this.player));
+	};
+	onPause = () => {
+		this.setState({ playing: false });
+	};
+
+	onPlay = () => {
+		this.setState({ playing: true });
+	};
+
+	onSeekMouseDown = (e) => {
+		this.setState({ seeking: true });
+	};
+
+	onSeekChange = (e) => {
+		this.setState({ played: parseFloat(e.target.value) });
+	};
+
+	onSeekMouseUp = (e) => {
+		this.setState({ seeking: false });
+		this.player.seekTo(parseFloat(e.target.value));
+	};
+
+	onProgress = (state) => {
+		if (!this.state.seeking) {
+			this.setState(state);
+		}
+	};
+
+	onDuration = (duration) => {
+		this.setState({ duration });
+	};
+	ref = (player) => {
+		this.player = player;
+	};
+
 	render() {
+		console.log(this.state.playing);
 		const moveCard = (dragIndex, hoverIndex) => {
 			const dragCard = this.state.queue[dragIndex];
 			let newState = update(this.state.queue, {
@@ -75,14 +119,26 @@ class VideoQueue extends Component {
 					<div className="col-12 col-sm-8 video-holder">
 						<div className="player-wrapper ">
 							<ReactPlayer
+								ref={this.ref}
 								className="react-player-main"
 								url={this.state.videos[0].url}
 								width="100%"
 								height="100%"
 								playing={this.state.playing}
+								onPause={this.onPause}
+								onPlay={this.onPlay}
+								onProgress={this.onProgress}
+								onDuration={this.onDuration}
 							/>
 						</div>
-						<VideoControls onPlayPause={this.onPlayPause} {...this.state} />
+						<VideoControls
+							onPlayPause={this.onPlayPause}
+							onClickFullScreen={this.onClickFullScreen}
+							onSeekMouseDown={this.onSeekMouseDown}
+							onSeekChange={this.onSeekChange}
+							onSeekMouseUp={this.onSeekMouseUp}
+							{...this.state}
+						/>
 					</div>
 					<div className="col-12 col-sm-4">
 						<h1>Up Next</h1>
