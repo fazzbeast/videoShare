@@ -4,19 +4,7 @@ import "./videoControls.css";
 export default function VideoControls(props) {
   return (
     <div className="containerControl">
-      <div className="mb-2">
-        <Button className="btn-primary" onClick={props.onPlayPause}>
-          {props.playing ? "Pause" : "Play"}
-        </Button>
-        <Button className="btn-primary ml-2" onClick={props.onClickFullScreen}>
-          Fullscreen
-        </Button>
-        <Button className="btn-primary ml-2" onClick={props.onNext}>
-          Next
-        </Button>
-      </div>
-
-      <div className="silder-container">
+      <div className="slider-container">
         <input
           className="sliders"
           type="range"
@@ -27,8 +15,19 @@ export default function VideoControls(props) {
           onChange={props.onSeekChange}
           onMouseUp={props.onSeekMouseUp}
           value={props.played}
-        />{" "}
-        {timeFormat(props.played * props.duration)}
+        />
+        <div className="ml-1">{timeFormat(props.played * props.duration)}</div>
+      </div>
+      <div className="mt-2">
+        <Button className="btn-primary" onClick={props.onPlayPause}>
+          {props.playing ? "Pause" : "Play"}
+        </Button>
+        <Button className="btn-primary ml-2" onClick={props.onClickFullScreen}>
+          Fullscreen
+        </Button>
+        <Button className="btn-primary ml-2" onClick={props.onNext}>
+          Next
+        </Button>
       </div>
     </div>
   );

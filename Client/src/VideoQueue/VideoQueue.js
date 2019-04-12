@@ -54,10 +54,13 @@ class VideoQueue extends Component {
     if (event.key === "Enter") {
       const url = event.target.value;
       const newData = { url: url, id: this.state.videos.length + 2 };
-
       oldVideosMain.push(newData);
-      newData.slice(1);
-      oldVideosQueue.push(newData);
+      if (oldVideosMain.length >= 2) {
+        oldVideosQueue.push(newData);
+      }
+
+      console.log("Main", oldVideosMain, "Queue", oldVideosQueue);
+      // oldVideosMain.slice(1);
       this.setState({
         newVideo: { url },
         queue: oldVideosQueue,
