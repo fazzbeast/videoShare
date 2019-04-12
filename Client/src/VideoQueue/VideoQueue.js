@@ -14,7 +14,9 @@ import VideoQueueList from "./../VideoQueueList/VideoQueueList";
 import VideoControls from "../videoControls/videoControls";
 import screenfull from "screenfull";
 import { findDOMNode } from "react-dom";
+import socketIOClient from "socket.io-client";
 
+var socket;
 class VideoQueue extends Component {
   constructor(props) {
     super(props);
@@ -29,12 +31,24 @@ class VideoQueue extends Component {
       input: "",
       playing: false,
       played: 0,
-      duration: 0
+      duration: 0,
+      endpoint: "http://localhost:5000/"
     };
+    socket = socketIOClient(this.state.endpoint);
   }
 
   componentDidMount() {
     this.setState({ queue: this.state.videos.slice(1) });
+    socket.emit("joinRoom", this.props.match.params.id);
+    socket.on("NewCurrentTime", playtime => {
+      this.setState({ played: playtime.time, playing: playtime.playing });
+      this.player.seekTo(playtime.time);
+    });
+    socket.on("pauseplay", pauseplay => {
+      console.log(pauseplay);
+      this.setState({ playing: pauseplay.playing, played: pauseplay.played });
+      this.player.seekTo(pauseplay.played);
+    });
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.videos.length !== this.state.videos.length) {
@@ -44,6 +58,10 @@ class VideoQueue extends Component {
 
   onPlayPause = () => {
     this.setState({ playing: !this.state.playing });
+    socket.emit("pauseplayemit", {
+      playing: !this.state.playing,
+      played: this.state.played
+    });
   };
   onChange = event => {
     this.setState({ input: event.target.value });
@@ -59,8 +77,6 @@ class VideoQueue extends Component {
         oldVideosQueue.push(newData);
       }
 
-      console.log("Main", oldVideosMain, "Queue", oldVideosQueue);
-      // oldVideosMain.slice(1);
       this.setState({
         newVideo: { url },
         queue: oldVideosQueue,
@@ -75,6 +91,10 @@ class VideoQueue extends Component {
   };
   onPause = () => {
     this.setState({ playing: false });
+    socket.emit("pauseplayemit", {
+      playing: false,
+      played: this.state.played
+    });
   };
 
   onPlay = () => {
@@ -92,10 +112,16 @@ class VideoQueue extends Component {
   onSeekMouseUp = e => {
     this.setState({ seeking: false });
     this.player.seekTo(parseFloat(e.target.value));
+    socket.emit("seekPlayTime", {
+      time: e.target.value,
+      playing: this.state.playing
+    });
+    console.log(this.state.played);
   };
 
   onProgress = state => {
     if (!this.state.seeking) {
+      console.log(state);
       this.setState(state);
     }
   };
@@ -112,6 +138,7 @@ class VideoQueue extends Component {
   };
 
   render() {
+    console.log(this.state.played, this.state.playing);
     const moveCard = (dragIndex, hoverIndex) => {
       const dragCard = this.state.queue[dragIndex];
       let newState = update(this.state.queue, {
