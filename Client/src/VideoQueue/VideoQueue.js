@@ -48,7 +48,6 @@ class VideoQueue extends Component {
       this.setState({ playing: pauseplay.playing, played: pauseplay.played });
     });
     socket.on("addedNewVideo", addedNewVideo => {
-      console.log(addedNewVideo);
       this.setState({ videos: addedNewVideo.main, queue: addedNewVideo.queue });
     });
   }
@@ -149,7 +148,6 @@ class VideoQueue extends Component {
   };
 
   render() {
-    console.log(this.state.played, this.state.playing);
     const moveCard = (dragIndex, hoverIndex) => {
       const dragCard = this.state.queue[dragIndex];
       let newState = update(this.state.queue, {
