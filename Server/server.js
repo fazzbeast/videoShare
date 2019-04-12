@@ -38,6 +38,9 @@ io.on("connection", socket => {
   socket.on("pauseplayemit", function(pauseplay) {
     socket.broadcast.to(socket.room).emit("pauseplay", pauseplay);
   });
+  socket.on("newVideo", function(newVideo) {
+    socket.broadcast.to(socket.room).emit("addedNewVideo", newVideo);
+  });
 });
 
 app.use("/auth", auth);
