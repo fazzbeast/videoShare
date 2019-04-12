@@ -7,11 +7,11 @@ var passport = require("passport");
 const { check, validationResult } = require("express-validator/check");
 const queries = require("./queries");
 const auth = require("./auth");
-
+const pool = require("./queries").pool;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(passport.initialize());
-
+const uuid = require("uuid");
 // enable all CORS requests
 app.use(cors());
 //
@@ -85,3 +85,24 @@ app.post(
     queries.registerUser(req, name, email, password, matchPassword, res);
   }
 );
+
+app.post("/videoQueue/add", (req, res, next) => {
+  let url = req.body.url;
+  let roomID = req.body.room;
+  let videoID;
+  if (req.body.videoID) {
+    videoID = req.body.videoID;
+  } else {
+    videoID = uuid.v1();
+  }
+
+  let position = req.body.position;
+  pool.query(
+    'INSERT INTO "videoList" ("videoLinks","videoID", "roomID", "queueOrder") VALUES ($1, $2, $3,$4) ON CONFLICT ("videoID") DO UPDATE SET "queueOrder"=EXCLUDED."queueOrder"',
+    [url, videoID, roomID, position],
+    (error, results) => {
+      console.log(error, results);
+      return;
+    }
+  );
+});
