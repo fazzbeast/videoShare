@@ -16,7 +16,6 @@ import axios from "axios";
 
 export const addVideos = (videos, room) => dispatch => {
   videos.map((video, idx) => {
-    console.log(video);
     const info = {
       url: video.url,
       room: room,
@@ -29,20 +28,27 @@ export const addVideos = (videos, room) => dispatch => {
         "content-type": "application/json"
       },
       data: JSON.stringify(info)
-    }).catch(err => {
-      const errors = {
-        msg: err.response.data,
-        status: err.response.status
-      };
-      dispatch({
-        type: GET_ERRORS,
-        payload: errors
+    })
+      .then(data => {
+        dispatch({
+          type: GET_VIDEOS,
+          payload: data.data
+        });
+      })
+      .catch(err => {
+        const errors = {
+          msg: err.response.data,
+          status: err.response.status
+        };
+        dispatch({
+          type: GET_ERRORS,
+          payload: errors
+        });
+        dispatch({
+          type: ADD_VIDEOS,
+          payload: "errors"
+        });
       });
-      dispatch({
-        type: ADD_VIDEOS,
-        payload: "errors"
-      });
-    });
     return dispatch({
       type: ADD_VIDEOS,
       payload: "Success"

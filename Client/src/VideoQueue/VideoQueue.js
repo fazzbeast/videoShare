@@ -74,11 +74,11 @@ class VideoQueue extends Component {
     this.setState({ input: event.target.value });
   };
   handleKeyPress = event => {
-    let oldVideosQueue = this.state.queue;
-    let oldVideosMain = this.state.videos;
+    let oldVideosQueue = [...this.state.queue];
+    let oldVideosMain = [...this.state.videos];
     if (event.key === "Enter") {
       const url = event.target.value;
-      const newData = { url: url, id: this.state.videos.length + 2 };
+      const newData = { url: url, queueOrder: this.state.videos.length + 2 };
       oldVideosMain.push(newData);
       if (oldVideosMain.length >= 2) {
         oldVideosQueue.push(newData);
@@ -87,14 +87,8 @@ class VideoQueue extends Component {
         queue: oldVideosQueue,
         main: oldVideosMain
       });
-      this.setState({
-        newVideo: { url },
-        queue: oldVideosQueue,
-        videos: oldVideosMain,
-        input: ""
-      });
+      this.setState({ input: "" });
       this.props.updateVideos(oldVideosMain, this.props.match.params.id);
-      this.props.getVideos(this.props.match.params.id);
     }
   };
 
@@ -166,13 +160,13 @@ class VideoQueue extends Component {
       let newList = this.state.videos.concat(newState);
       this.props.updateVideos(newList, this.props.match.params.id);
     };
+    console.log(this.state.queue);
     let loop = this.state.queue.map((data, idx) => (
       <VideoQueueList
         Data={data}
         handleDrop={idx => this.deleteItem(idx)}
         key={data.videoID}
         index={idx}
-        id={data.id}
         moveCard={moveCard}
       />
     ));
