@@ -58,7 +58,6 @@ export const getVideos = roomID => dispatch => {
     },
     data: JSON.stringify({ room: roomID })
   }).then(data => {
-    console.log(data);
     dispatch({
       type: GET_VIDEOS,
       payload: data.data

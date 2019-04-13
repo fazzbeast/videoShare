@@ -33,10 +33,17 @@ class VideoQueue extends Component {
     };
     socket = socketIOClient(this.state.endpoint);
   }
-
+  static getDerivedStateFromProps(props, state) {
+    if (props.videos !== state.videos) {
+      return {
+        videos: props.videos
+      };
+    } else {
+      return null;
+    }
+  }
   componentDidMount() {
     this.props.getVideos(this.props.match.params.id);
-
     this.setState({ queue: this.state.videos.slice(1) });
     socket.emit("joinRoom", this.props.match.params.id);
     socket.on("NewCurrentTime", playtime => {
@@ -51,9 +58,6 @@ class VideoQueue extends Component {
     });
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.videos !== this.props.videos) {
-      this.setState({ videos: this.props.videos });
-    }
     if (prevState.videos.length !== this.state.videos.length) {
       this.setState({ queue: this.state.videos.slice(1) });
     }
@@ -151,7 +155,6 @@ class VideoQueue extends Component {
   };
 
   render() {
-    console.log(this.props.videos, this.state);
     const moveCard = (dragIndex, hoverIndex) => {
       const dragCard = this.state.queue[dragIndex];
       let newState = update(this.state.queue, {
@@ -164,7 +167,7 @@ class VideoQueue extends Component {
       <VideoQueueList
         Data={data}
         handleDrop={idx => this.deleteItem(idx)}
-        key={data.id}
+        key={data.videoID}
         index={idx}
         id={data.id}
         moveCard={moveCard}

@@ -14,7 +14,6 @@ const VideoQueueList = React.forwardRef(
     useImperativeHandle(ref, () => ({
       getNode: () => elementRef.current
     }));
-    console.log(Data);
     const titleFetch = fetch(
       `http://noembed.com/embed?url=${Data.url.replace(":", "%3A")}`
     ).then(data => {
