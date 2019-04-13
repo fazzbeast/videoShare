@@ -98,11 +98,29 @@ app.post("/videoQueue/add", (req, res, next) => {
 
   let position = req.body.position;
   pool.query(
-    'INSERT INTO "videoList" ("videoLinks","videoID", "roomID", "queueOrder") VALUES ($1, $2, $3,$4) ON CONFLICT ("videoID") DO UPDATE SET "queueOrder"=EXCLUDED."queueOrder"',
+    'INSERT INTO "videoList" ("url","videoID", "roomID", "queueOrder") VALUES ($1, $2, $3,$4) ON CONFLICT ("videoID") DO UPDATE SET "queueOrder"=EXCLUDED."queueOrder"',
     [url, videoID, roomID, position],
     (error, results) => {
-      console.log(error, results);
-      return;
+      if (error) {
+        return res.status(400).send(error);
+      } else {
+        return res.status(200).send();
+      }
+    }
+  );
+});
+
+app.post("/videoQueue/getData", (req, res, next) => {
+  let roomID = req.body.room;
+  pool.query(
+    'SELECT * FROM "videoList" WHERE "roomID"=$1 ORDER BY "queueOrder"',
+    [roomID],
+    (error, results) => {
+      if (error) {
+        return res.status(400).send(error);
+      } else {
+        return res.status(200).json(results.rows);
+      }
     }
   );
 });

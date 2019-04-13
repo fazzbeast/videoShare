@@ -15,17 +15,14 @@ import VideoControls from "../videoControls/videoControls";
 import screenfull from "screenfull";
 import { findDOMNode } from "react-dom";
 import socketIOClient from "socket.io-client";
-
+import { connect } from "react-redux";
+import { addVideos, getVideos } from "../actions/userActions";
 var socket;
 class VideoQueue extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      videos: [
-        { url: "https://www.youtube.com/watch?v=ajAfZEDZKCI", id: 1 },
-        { url: "https://www.youtube.com/watch?v=rUg0bi74X2o", id: 2 },
-        { url: "https://www.youtube.com/watch?v=W1FmNWPPTeM", id: 3 }
-      ],
+      videos: [],
       newVideo: { url: "" },
       queue: [],
       input: "",
@@ -38,6 +35,8 @@ class VideoQueue extends Component {
   }
 
   componentDidMount() {
+    this.props.getVideos(this.props.match.params.id);
+
     this.setState({ queue: this.state.videos.slice(1) });
     socket.emit("joinRoom", this.props.match.params.id);
     socket.on("NewCurrentTime", playtime => {
@@ -52,6 +51,9 @@ class VideoQueue extends Component {
     });
   }
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.videos !== this.props.videos) {
+      this.setState({ videos: this.props.videos });
+    }
     if (prevState.videos.length !== this.state.videos.length) {
       this.setState({ queue: this.state.videos.slice(1) });
     }
@@ -87,6 +89,7 @@ class VideoQueue extends Component {
         videos: oldVideosMain,
         input: ""
       });
+      this.props.updateVideos(oldVideosMain, this.props.match.params.id);
     }
   };
 
@@ -148,6 +151,7 @@ class VideoQueue extends Component {
   };
 
   render() {
+    console.log(this.props.videos, this.state);
     const moveCard = (dragIndex, hoverIndex) => {
       const dragCard = this.state.queue[dragIndex];
       let newState = update(this.state.queue, {
@@ -229,5 +233,23 @@ class VideoQueue extends Component {
     );
   }
 }
+const mapStateToProps = (state, ownProps) => {
+  return {
+    videos: state.userReducer.Videos
+  };
+};
 
-export default withRouter(VideoQueue);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    updateVideos: (updateVideos, room) => {
+      dispatch(addVideos(updateVideos, room));
+    },
+    getVideos: room => {
+      dispatch(getVideos(room));
+    }
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(VideoQueue));
