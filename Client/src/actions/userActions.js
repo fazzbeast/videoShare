@@ -15,12 +15,12 @@ import {
 import axios from "axios";
 
 export const addVideos = (videos, room) => dispatch => {
-  console.log(room);
   videos.map((video, idx) => {
+    console.log(video);
     const info = {
       url: video.url,
       room: room,
-      videoID: video.ID || null,
+      videoID: video.videoID || null,
       position: idx
     };
     axios("/videoQueue/add", {

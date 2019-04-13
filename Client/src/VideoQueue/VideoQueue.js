@@ -94,6 +94,7 @@ class VideoQueue extends Component {
         input: ""
       });
       this.props.updateVideos(oldVideosMain, this.props.match.params.id);
+      this.props.getVideos(this.props.match.params.id);
     }
   };
 
@@ -162,6 +163,8 @@ class VideoQueue extends Component {
       });
 
       this.setState({ queue: newState });
+      let newList = this.state.videos.concat(newState);
+      this.props.updateVideos(newList, this.props.match.params.id);
     };
     let loop = this.state.queue.map((data, idx) => (
       <VideoQueueList
