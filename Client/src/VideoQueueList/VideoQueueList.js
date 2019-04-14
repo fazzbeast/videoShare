@@ -1,12 +1,15 @@
 import React, { useImperativeHandle, useRef } from "react";
 import { DragSource, DropTarget } from "react-dnd";
 
-import { ListGroupItem } from "reactstrap";
+import { ListGroupItem, Button } from "reactstrap";
 import ReactPlayer from "react-player";
 import "./VideoQueueList.css";
 
 const VideoQueueList = React.forwardRef(
-  ({ Data, isDragging, connectDragSource, connectDropTarget }, ref) => {
+  (
+    { Data, isDragging, connectDragSource, connectDropTarget, onDelete },
+    ref
+  ) => {
     const elementRef = useRef(null);
     connectDragSource(elementRef);
     connectDropTarget(elementRef);
@@ -37,6 +40,7 @@ const VideoQueueList = React.forwardRef(
               }}
             />
           </div>
+          <Button onClick={() => onDelete(Data.videoID)}>X</Button>
         </ListGroupItem>
       </div>
     );

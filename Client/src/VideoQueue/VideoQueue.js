@@ -16,7 +16,7 @@ import screenfull from "screenfull";
 import { findDOMNode } from "react-dom";
 import socketIOClient from "socket.io-client";
 import { connect } from "react-redux";
-import { addVideos, getVideos } from "../actions/userActions";
+import { addVideos, getVideos, deleteVideos } from "../actions/userActions";
 var socket;
 class VideoQueue extends Component {
   constructor(props) {
@@ -149,6 +149,10 @@ class VideoQueue extends Component {
     this.player = player;
   };
 
+  onDelete = videoID => {
+    this.props.deleteVideo(videoID, this.props.match.params.id);
+  };
+
   render() {
     const moveCard = (dragIndex, hoverIndex) => {
       const dragCard = this.state.queue[dragIndex];
@@ -168,6 +172,7 @@ class VideoQueue extends Component {
         key={data.videoID}
         index={idx}
         moveCard={moveCard}
+        onDelete={this.onDelete}
       />
     ));
     return (
@@ -246,6 +251,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     getVideos: room => {
       dispatch(getVideos(room));
+    },
+    deleteVideo: (videoID, roomID) => {
+      dispatch(deleteVideos(videoID, roomID));
     }
   };
 };

@@ -71,8 +71,43 @@ export const getVideos = roomID => dispatch => {
   });
 };
 
-export const deleteVideos = () => dispatch => {
-  //TODO: get videos
+export const deleteVideos = (videoID, roomID) => dispatch => {
+  let payload = {
+    videoID: videoID,
+    room: roomID
+  };
+  axios("/videoQueue/delete", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json"
+    },
+    data: JSON.stringify(payload)
+  })
+    .then(data => {
+      console.log(data);
+      dispatch({
+        type: GET_VIDEOS,
+        payload: data.data
+      });
+    })
+    .catch(err => {
+      const errors = {
+        msg: err.response.data,
+        status: err.response.status
+      };
+      dispatch({
+        type: GET_ERRORS,
+        payload: errors
+      });
+      dispatch({
+        type: DELETE_VIDEO,
+        payload: "errors"
+      });
+    });
+  return dispatch({
+    type: DELETE_ROOM,
+    payload: "Success"
+  });
 };
 
 export const registerUser = newUserData => dispatch => {

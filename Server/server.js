@@ -136,3 +136,29 @@ app.post("/videoQueue/getData", (req, res, next) => {
     }
   );
 });
+
+app.post("/videoQueue/delete", (req, res, next) => {
+  let videoID = req.body.videoID;
+  let roomID = req.body.room;
+  pool.query(
+    'DELETE FROM "videoList" WHERE "videoID"=$1 ',
+    [videoID],
+    (error, results) => {
+      if (error) {
+        return res.status(400).send(error);
+      } else {
+        pool.query(
+          'SELECT * FROM "videoList" WHERE "roomID"=$1 ORDER BY "queueOrder"',
+          [roomID],
+          (error2, results2) => {
+            if (error) {
+              return res.status(400).send(error2);
+            } else {
+              return res.status(200).json(results2.rows);
+            }
+          }
+        );
+      }
+    }
+  );
+});
