@@ -14,7 +14,7 @@ import {
 } from "./types";
 import axios from "axios";
 
-export const addVideos = (videos, room) => dispatch => {
+export const addVideos = (videos, room, socket) => dispatch => {
   videos.map((video, idx) => {
     const info = {
       url: video.url,
@@ -33,6 +33,11 @@ export const addVideos = (videos, room) => dispatch => {
         dispatch({
           type: GET_VIDEOS,
           payload: data.data
+        });
+        console.log("addActions");
+        socket.emit("newVideo", {
+          queue: data.data.slice(1),
+          main: data.data
         });
       })
       .catch(err => {
@@ -71,7 +76,7 @@ export const getVideos = roomID => dispatch => {
   });
 };
 
-export const deleteVideos = (videoID, roomID) => dispatch => {
+export const deleteVideos = (videoID, roomID, socket) => dispatch => {
   let payload = {
     videoID: videoID,
     room: roomID
@@ -84,11 +89,12 @@ export const deleteVideos = (videoID, roomID) => dispatch => {
     data: JSON.stringify(payload)
   })
     .then(data => {
-      console.log(data);
       dispatch({
         type: GET_VIDEOS,
         payload: data.data
       });
+      console.log("Delete Actions");
+      socket.emit("VideoSuccessFullyDeleted", "delete");
     })
     .catch(err => {
       const errors = {

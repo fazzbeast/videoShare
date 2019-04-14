@@ -53,8 +53,14 @@ class VideoQueue extends Component {
     socket.on("pauseplay", pauseplay => {
       this.setState({ playing: pauseplay.playing, played: pauseplay.played });
     });
-    socket.on("addedNewVideo", addedNewVideo => {
-      this.setState({ videos: addedNewVideo.main, queue: addedNewVideo.queue });
+    socket.on("addedNewVideo", () => {
+      console.log("added Update");
+      this.props.getVideos(this.props.match.params.id);
+      // this.setState({ videos: addedNewVideo.main, queue: addedNewVideo.queue });
+    });
+    socket.on("videoDeleted", () => {
+      console.log("deleted Update");
+      this.props.getVideos(this.props.match.params.id);
     });
   }
   componentDidUpdate(prevProps, prevState) {
@@ -83,12 +89,16 @@ class VideoQueue extends Component {
       if (oldVideosMain.length >= 2) {
         oldVideosQueue.push(newData);
       }
-      socket.emit("newVideo", {
-        queue: oldVideosQueue,
-        main: oldVideosMain
-      });
+      // socket.emit("newVideo", {
+      //   queue: oldVideosQueue,
+      //   main: oldVideosMain
+      // });
       this.setState({ input: "" });
-      this.props.updateVideos(oldVideosMain, this.props.match.params.id);
+      this.props.updateVideos(
+        oldVideosMain,
+        this.props.match.params.id,
+        socket
+      );
     }
   };
 
@@ -150,7 +160,8 @@ class VideoQueue extends Component {
   };
 
   onDelete = videoID => {
-    this.props.deleteVideo(videoID, this.props.match.params.id);
+    this.props.deleteVideo(videoID, this.props.match.params.id, socket);
+    // socket.emit("VideoSuccessFullyDeleted");
   };
 
   render() {
@@ -164,7 +175,7 @@ class VideoQueue extends Component {
       let newList = this.state.videos.concat(newState);
       this.props.updateVideos(newList, this.props.match.params.id);
     };
-    console.log(this.state.queue);
+
     let loop = this.state.queue.map((data, idx) => (
       <VideoQueueList
         Data={data}
@@ -246,14 +257,14 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    updateVideos: (updateVideos, room) => {
-      dispatch(addVideos(updateVideos, room));
+    updateVideos: (updateVideos, room, socket) => {
+      dispatch(addVideos(updateVideos, room, socket));
     },
     getVideos: room => {
       dispatch(getVideos(room));
     },
-    deleteVideo: (videoID, roomID) => {
-      dispatch(deleteVideos(videoID, roomID));
+    deleteVideo: (videoID, roomID, socket) => {
+      dispatch(deleteVideos(videoID, roomID, socket));
     }
   };
 };

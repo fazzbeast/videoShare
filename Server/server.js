@@ -39,7 +39,12 @@ io.on("connection", socket => {
     socket.broadcast.to(socket.room).emit("pauseplay", pauseplay);
   });
   socket.on("newVideo", function(newVideo) {
-    socket.broadcast.to(socket.room).emit("addedNewVideo", newVideo);
+    console.log("server Add");
+    socket.broadcast.to(socket.room).emit("addedNewVideo", "newVideo");
+  });
+  socket.on("VideoSuccessFullyDeleted", function() {
+    console.log("server delete");
+    socket.broadcast.to(socket.room).emit("videoDeleted", "stuff");
   });
 });
 
