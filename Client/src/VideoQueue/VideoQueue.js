@@ -20,8 +20,10 @@ import {
   addVideos,
   getVideos,
   deleteVideos,
-  addToRecentlyPlayed
+  addToRecentlyPlayed,
+  deleteRecentlyPlayed
 } from "../actions/userActions";
+import VideoRecentList from "../VideoRecentList/VideoRecentList";
 var socket;
 //TODO: add previously watched videos section
 class VideoQueue extends Component {
@@ -98,6 +100,23 @@ class VideoQueue extends Component {
         this.props.match.params.id,
         socket
       );
+    }
+  };
+
+  onClickRecentAdd = (event, videoInfo) => {
+    event.stopPropagation();
+    let oldVideosMain = [...this.state.videos];
+    oldVideosMain.push(videoInfo);
+    let oldRecent = [...this.props.recentlyPlayed];
+    let index = oldRecent.indexOf(videoInfo);
+    if (index !== -1) {
+      oldRecent.splice(index, 1);
+      this.props.updateVideos(
+        oldVideosMain,
+        this.props.match.params.id,
+        socket
+      );
+      this.props.deleteRecent(oldRecent);
     }
   };
 
@@ -199,13 +218,11 @@ class VideoQueue extends Component {
     ));
     const recentData = this.props.recentlyPlayed;
     let recent = recentData.map((data, idx) => (
-      <VideoQueueList
+      <VideoRecentList
         Data={data}
-        handleDrop={idx => this.deleteItem(idx)}
+        changeRecent={this.onClickRecentAdd}
         key={data.videoID}
         index={idx}
-        moveCard={moveCard}
-        onDelete={this.onDelete}
       />
     ));
     return (
@@ -247,8 +264,10 @@ class VideoQueue extends Component {
               {...this.state}
             />
             <div>
-              <h2 className="mt-2">Recently Played</h2>
-              {recent.length > 0 ? recent : <h5>No Recently Played</h5>}
+              <h2 className="mt-2 ">Recently Played</h2>
+              <div className="VideoRecentMain">
+                {recent.length > 0 ? recent : <h5>No Recently Played</h5>}
+              </div>
             </div>
           </div>
           <div className="col-12 col-sm-4">
@@ -298,6 +317,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     justPlayed: videoData => {
       dispatch(addToRecentlyPlayed(videoData));
+    },
+    deleteRecent: videos => {
+      dispatch(deleteRecentlyPlayed(videos));
     }
   };
 };

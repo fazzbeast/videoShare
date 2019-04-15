@@ -1,0 +1,26 @@
+.VideoRecentMain {
+    display: flex;
+    overflow: scroll;
+    flex-direction: row;
+}
+
+.items {
+    width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: 4px !important;
+    background-color: #343a40 !important;
+    margin: 2px;
+    flex: 0 0 50%;
+
+
+}
+
+.delete {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+}

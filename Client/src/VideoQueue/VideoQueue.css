@@ -2,7 +2,8 @@
 .darktheme {
     background-color: #212529;
     color: whitesmoke;
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
 }
 
 .player-wrapper {

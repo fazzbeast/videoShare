@@ -9,7 +9,8 @@ import {
   GET_VIDEOS,
   DELETE_VIDEO,
   ADD_VIDEOS,
-  ADD_RECENTLY_PLAYED
+  ADD_RECENTLY_PLAYED,
+  DELETE_RECENTLY_PLAYED
 } from "../actions/types";
 
 const initialState = {
@@ -27,6 +28,11 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case DELETE_RECENTLY_PLAYED:
+      return {
+        ...state,
+        recentlyPlayed: action.payload
+      };
     case ADD_RECENTLY_PLAYED:
       return {
         ...state,
