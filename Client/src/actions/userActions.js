@@ -41,6 +41,7 @@ export const addVideos = (videos, room, socket) => dispatch => {
         });
       })
       .catch(err => {
+        console.log(err);
         const errors = {
           msg: err.response.data,
           status: err.response.status
@@ -81,7 +82,7 @@ export const deleteVideos = (videoID, roomID, socket) => dispatch => {
     videoID: videoID,
     room: roomID
   };
-  console.log(payload);
+
   axios("/videoQueue/delete", {
     method: "POST",
     headers: {

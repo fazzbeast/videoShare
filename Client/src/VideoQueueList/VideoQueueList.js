@@ -24,9 +24,9 @@ const VideoQueueList = React.forwardRef(
     });
     return (
       <div ref={elementRef} style={{ opacity: opacity }}>
-        <ListGroupItem style={{ height: "150px" }} className="items">
+        <ListGroupItem style={{ height: "102px" }} className="items ">
           <div>{}</div>
-          <div className="thumbnail float-right">
+          <div className="thumbnail m-auto">
             <ReactPlayer
               light={true}
               className="react-player-sub"
@@ -40,7 +40,9 @@ const VideoQueueList = React.forwardRef(
               }}
             />
           </div>
-          <Button onClick={() => onDelete(Data.videoID)}>X</Button>
+          <Button className="delete" onClick={() => onDelete(Data.videoID)}>
+            X
+          </Button>
         </ListGroupItem>
       </div>
     );

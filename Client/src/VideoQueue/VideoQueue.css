@@ -1,4 +1,9 @@
 /* .video-holder {} */
+.darktheme {
+    background-color: #212529;
+    color: whitesmoke;
+    height: 100vh;
+}
 
 .player-wrapper {
     position: relative;
@@ -15,11 +20,11 @@
 .react-player-sub {
     position: absolute;
     top: 0;
-    transform: translateY(10%)
+    /* transform: translateY(10%) */
 }
 
 .thumbnail {
     position: relative;
-    height: 94px;
+    height: auto;
     width: 168px
 }

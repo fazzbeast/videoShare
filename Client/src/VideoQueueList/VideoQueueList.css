@@ -4,5 +4,15 @@
     cursor: move;
     display: flex;
     justify-content: center;
+    padding: 4px !important;
+    background-color: #343a40 !important;
+    margin: 2px;
+
+}
+
+.delete {
+    position: absolute;
+    top: 0;
+    left: 0;
 
 }

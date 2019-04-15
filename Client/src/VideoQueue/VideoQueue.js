@@ -171,7 +171,7 @@ class VideoQueue extends Component {
 
       this.setState({ queue: newState });
       let newList = this.state.videos.concat(newState);
-      this.props.updateVideos(newList, this.props.match.params.id);
+      this.props.updateVideos(newList, this.props.match.params.id, socket);
     };
 
     let loop = this.state.queue.map((data, idx) => (
@@ -185,7 +185,7 @@ class VideoQueue extends Component {
       />
     ));
     return (
-      <div className="container-fluid vh-50">
+      <div className="container-fluid vh-50 darktheme">
         <div className="row h-100">
           <div className="col-12 col-sm-8 video-holder">
             <div className="player-wrapper ">
@@ -222,7 +222,7 @@ class VideoQueue extends Component {
           </div>
           <div className="col-12 col-sm-4">
             <h1>Up Next</h1>
-            <div className="mb-2">
+            <div className="mb-2 mr-2">
               <InputGroup>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>Add to Queue</InputGroupText>
@@ -234,7 +234,7 @@ class VideoQueue extends Component {
                 />
               </InputGroup>
             </div>
-            <ListGroup className="clearfix">
+            <ListGroup className="clearfix mr-2">
               {this.state.videos.length <= 1 ? (
                 <h3>No videos in queue</h3>
               ) : (
