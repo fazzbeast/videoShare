@@ -8,7 +8,8 @@ import {
   CLEAR_DATA,
   GET_VIDEOS,
   DELETE_VIDEO,
-  ADD_VIDEOS
+  ADD_VIDEOS,
+  ADD_RECENTLY_PLAYED
 } from "../actions/types";
 
 const initialState = {
@@ -20,11 +21,14 @@ const initialState = {
   loginData: [],
   confirmationToken: null,
   createRoomData: [],
-  videosUpdated: false
+  videosUpdated: false,
+  recentlyPlayed: []
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case ADD_RECENTLY_PLAYED:
+      return this.recentlyPlayed.push(action.payload);
     case ADD_VIDEOS:
       return {
         ...state,

@@ -15,3 +15,4 @@ export const CLEAR_DATA = "CLEAR_DATA";
 export const GET_VIDEOS = "GET_VIDEOS";
 export const DELETE_VIDEO = "DELETE_VIDEO";
 export const ADD_VIDEOS = "ADD_VIDEOS";
+export const ADD_RECENTLY_PLAYED = "ADD_RECENTLY_PLAYED";

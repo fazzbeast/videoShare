@@ -16,7 +16,12 @@ import screenfull from "screenfull";
 import { findDOMNode } from "react-dom";
 import socketIOClient from "socket.io-client";
 import { connect } from "react-redux";
-import { addVideos, getVideos, deleteVideos } from "../actions/userActions";
+import {
+  addVideos,
+  getVideos,
+  deleteVideos,
+  addToRecentlyPlayed
+} from "../actions/userActions";
 var socket;
 //TODO: add previously watched videos section
 class VideoQueue extends Component {
@@ -97,7 +102,9 @@ class VideoQueue extends Component {
   };
 
   onClickFullScreen = () => {
-    screenfull.request(findDOMNode(this.player));
+    if (this.state.videos.length > 0) {
+      screenfull.request(findDOMNode(this.player));
+    }
   };
   onPause = () => {
     this.setState({ playing: false });
@@ -150,18 +157,23 @@ class VideoQueue extends Component {
   };
 
   onNext = () => {
-    socket.emit("newVideo", {
-      queue: this.state.videos.slice(1),
-      main: this.state.videos
-    });
-
-    this.props.deleteVideo(
-      this.state.videos[0].videoID,
-      this.props.match.params.id,
-      socket
-    );
+    if (this.state.videos.length > 0) {
+      socket.emit("newVideo", {
+        queue: this.state.videos.slice(1),
+        main: this.state.videos
+      });
+      this.props.justPlayed(this.state.videos[0]);
+      this.props.deleteVideo(
+        this.state.videos[0].videoID,
+        this.props.match.params.id,
+        socket
+      );
+    }
   };
 
+  onClickRedirect = () => {
+    this.props.history.push("/Rooms");
+  };
   render() {
     const moveCard = (dragIndex, hoverIndex) => {
       const dragCard = this.state.queue[dragIndex];
@@ -186,6 +198,9 @@ class VideoQueue extends Component {
     ));
     return (
       <div className="container-fluid vh-50 darktheme">
+        <div className="pt-2 backToRoom" onClick={this.onClickRedirect}>
+          <i className="fas fa-angle-left" /> Back to Rooms
+        </div>
         <div className="row h-100">
           <div className="col-12 col-sm-8 video-holder">
             <div className="player-wrapper ">
@@ -219,6 +234,9 @@ class VideoQueue extends Component {
               onNext={this.onNext}
               {...this.state}
             />
+            <div>
+              <h2 className="mt-2">Recently Played</h2>
+            </div>
           </div>
           <div className="col-12 col-sm-4">
             <h1>Up Next</h1>
@@ -249,7 +267,8 @@ class VideoQueue extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
   return {
-    videos: state.userReducer.Videos
+    videos: state.userReducer.Videos,
+    recentlyPlayed: state.userReducer.recentlyPlayed
   };
 };
 
@@ -263,6 +282,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     deleteVideo: (videoID, roomID, socket) => {
       dispatch(deleteVideos(videoID, roomID, socket));
+    },
+    justPlayed: video => {
+      dispatch(addToRecentlyPlayed(video));
     }
   };
 };

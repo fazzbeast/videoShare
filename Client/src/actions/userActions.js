@@ -10,10 +10,17 @@ import {
   CLEAR_DATA,
   GET_VIDEOS,
   DELETE_VIDEO,
-  ADD_VIDEOS
+  ADD_VIDEOS,
+  ADD_RECENTLY_PLAYED
 } from "./types";
 import axios from "axios";
 
+export const addToRecentlyPlayed = video => dispatch => {
+  dispatch({
+    type: ADD_RECENTLY_PLAYED,
+    payload: video
+  });
+};
 export const addVideos = (videos, room, socket) => dispatch => {
   videos.map((video, idx) => {
     const info = {
