@@ -1,0 +1,17 @@
+.titleAreaRoom {
+    background-color: transparent !important;
+    color: whitesmoke;
+}
+
+
+.modal-header,
+.modal-body,
+.modal-footer,
+.close * {
+    background-color: #2f353b !important;
+    color: whitesmoke;
+}
+
+.modal-content {
+    background-color: transparent !important;
+}

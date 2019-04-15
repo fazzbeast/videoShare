@@ -48,6 +48,7 @@ class RoomsCard extends Component {
         this.add(id)
       ) : (
         <FaShareSquare
+          color="white"
           onClick={e => this.showContent(e, id)}
           className="float-right"
           size="1.5em"
@@ -61,6 +62,7 @@ class RoomsCard extends Component {
         onClick={() => this.onClick(item.roomID)}>
         <h4 className="float-left">{item.roomName}</h4>
         <FaTrashAlt
+          color="white"
           size="1.5em"
           className="ml-1 float-right"
           onClick={e => this.props.onDeletes(e, item.roomID)}
