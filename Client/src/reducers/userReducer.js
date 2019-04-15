@@ -28,7 +28,10 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case ADD_RECENTLY_PLAYED:
-      return this.recentlyPlayed.push(action.payload);
+      return {
+        ...state,
+        recentlyPlayed: state.recentlyPlayed.concat(action.payload)
+      };
     case ADD_VIDEOS:
       return {
         ...state,

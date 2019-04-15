@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 
 export const addToRecentlyPlayed = video => dispatch => {
+  console.log(video);
   dispatch({
     type: ADD_RECENTLY_PLAYED,
     payload: video

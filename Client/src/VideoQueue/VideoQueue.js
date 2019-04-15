@@ -158,11 +158,12 @@ class VideoQueue extends Component {
 
   onNext = () => {
     if (this.state.videos.length > 0) {
+      const temp = [...this.state.videos];
       socket.emit("newVideo", {
         queue: this.state.videos.slice(1),
         main: this.state.videos
       });
-      this.props.justPlayed(this.state.videos[0]);
+      this.props.justPlayed(temp[0]);
       this.props.deleteVideo(
         this.state.videos[0].videoID,
         this.props.match.params.id,
@@ -187,6 +188,17 @@ class VideoQueue extends Component {
     };
 
     let loop = this.state.queue.map((data, idx) => (
+      <VideoQueueList
+        Data={data}
+        handleDrop={idx => this.deleteItem(idx)}
+        key={data.videoID}
+        index={idx}
+        moveCard={moveCard}
+        onDelete={this.onDelete}
+      />
+    ));
+    const recentData = this.props.recentlyPlayed;
+    let recent = recentData.map((data, idx) => (
       <VideoQueueList
         Data={data}
         handleDrop={idx => this.deleteItem(idx)}
@@ -236,6 +248,7 @@ class VideoQueue extends Component {
             />
             <div>
               <h2 className="mt-2">Recently Played</h2>
+              {recent.length > 0 ? recent : <h5>No Recently Played</h5>}
             </div>
           </div>
           <div className="col-12 col-sm-4">
@@ -283,8 +296,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     deleteVideo: (videoID, roomID, socket) => {
       dispatch(deleteVideos(videoID, roomID, socket));
     },
-    justPlayed: video => {
-      dispatch(addToRecentlyPlayed(video));
+    justPlayed: videoData => {
+      dispatch(addToRecentlyPlayed(videoData));
     }
   };
 };
