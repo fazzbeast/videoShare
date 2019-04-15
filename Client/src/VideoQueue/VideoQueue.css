@@ -31,7 +31,10 @@
 }
 
 .backToRoom {
+    display: flex;
     cursor: pointer;
+    justify-content: left;
+    align-items: center;
 }
 
 .backToRoom:hover {

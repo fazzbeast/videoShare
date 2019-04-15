@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ListGroupItem, Button } from "reactstrap";
 import { withRouter } from "react-router-dom";
+import { FaShareSquare, FaTrashAlt } from "react-icons/fa";
 class RoomsCard extends Component {
   constructor(props) {
     super(props);
@@ -46,13 +47,11 @@ class RoomsCard extends Component {
       this.state.isItemContentVisible[id] ? (
         this.add(id)
       ) : (
-        <Button
+        <FaShareSquare
           onClick={e => this.showContent(e, id)}
           className="float-right"
-          color="primary"
-          size="sm">
-          Share
-        </Button>
+          size="1.5em"
+        />
       );
     const data = this.props.roomData || [];
     const display = data.map(item => (
@@ -61,12 +60,11 @@ class RoomsCard extends Component {
         className="pointer"
         onClick={() => this.onClick(item.roomID)}>
         <h4 className="float-left">{item.roomName}</h4>
-        <Button
-          size="sm"
-          className="ml-1 float-right btn-danger"
-          onClick={e => this.props.onDeletes(e, item.roomID)}>
-          Delete
-        </Button>
+        <FaTrashAlt
+          size="1.5em"
+          className="ml-1 float-right"
+          onClick={e => this.props.onDeletes(e, item.roomID)}
+        />
         {shared(item.roomID)}
       </ListGroupItem>
     ));

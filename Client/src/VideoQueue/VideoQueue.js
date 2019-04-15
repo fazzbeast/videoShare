@@ -25,6 +25,7 @@ import {
   updateRecentlyPlayed
 } from "../actions/userActions";
 import VideoRecentList from "../VideoRecentList/VideoRecentList";
+import { FaAngleLeft } from "react-icons/fa";
 
 var socket;
 class VideoQueue extends Component {
@@ -241,7 +242,7 @@ class VideoQueue extends Component {
     return (
       <div className="container-fluid vh-50 darktheme">
         <div className="pt-2 backToRoom" onClick={this.onClickRedirect}>
-          <i className="fas fa-angle-left" /> Back to Rooms
+          <FaAngleLeft className="fa-angle-left" /> Back to Rooms
         </div>
         <div className="row h-100">
           <div className="col-12 col-sm-8 video-holder">
