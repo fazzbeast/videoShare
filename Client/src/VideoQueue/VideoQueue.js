@@ -18,6 +18,7 @@ import socketIOClient from "socket.io-client";
 import { connect } from "react-redux";
 import { addVideos, getVideos, deleteVideos } from "../actions/userActions";
 var socket;
+//TODO: add previously watched videos section
 class VideoQueue extends Component {
   constructor(props) {
     super(props);
@@ -54,12 +55,9 @@ class VideoQueue extends Component {
       this.setState({ playing: pauseplay.playing, played: pauseplay.played });
     });
     socket.on("addedNewVideo", () => {
-      console.log("added Update");
       this.props.getVideos(this.props.match.params.id);
-      // this.setState({ videos: addedNewVideo.main, queue: addedNewVideo.queue });
     });
     socket.on("videoDeleted", () => {
-      console.log("deleted Update");
       this.props.getVideos(this.props.match.params.id);
     });
   }
@@ -89,10 +87,6 @@ class VideoQueue extends Component {
       if (oldVideosMain.length >= 2) {
         oldVideosQueue.push(newData);
       }
-      // socket.emit("newVideo", {
-      //   queue: oldVideosQueue,
-      //   main: oldVideosMain
-      // });
       this.setState({ input: "" });
       this.props.updateVideos(
         oldVideosMain,
@@ -143,15 +137,7 @@ class VideoQueue extends Component {
       this.setState(state);
     }
   };
-  onNext = () => {
-    let newVideos = this.state.videos;
-    newVideos.shift();
-    this.setState({ videos: newVideos, queue: newVideos.slice(1) });
-    socket.emit("newVideo", {
-      queue: newVideos.slice(1),
-      main: newVideos
-    });
-  };
+
   onDuration = duration => {
     this.setState({ duration });
   };
@@ -161,7 +147,19 @@ class VideoQueue extends Component {
 
   onDelete = videoID => {
     this.props.deleteVideo(videoID, this.props.match.params.id, socket);
-    // socket.emit("VideoSuccessFullyDeleted");
+  };
+
+  onNext = () => {
+    socket.emit("newVideo", {
+      queue: this.state.videos.slice(1),
+      main: this.state.videos
+    });
+
+    this.props.deleteVideo(
+      this.state.videos[0].videoID,
+      this.props.match.params.id,
+      socket
+    );
   };
 
   render() {

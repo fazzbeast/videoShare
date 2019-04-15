@@ -34,7 +34,7 @@ export const addVideos = (videos, room, socket) => dispatch => {
           type: GET_VIDEOS,
           payload: data.data
         });
-        console.log("addActions");
+
         socket.emit("newVideo", {
           queue: data.data.slice(1),
           main: data.data
@@ -81,6 +81,7 @@ export const deleteVideos = (videoID, roomID, socket) => dispatch => {
     videoID: videoID,
     room: roomID
   };
+  console.log(payload);
   axios("/videoQueue/delete", {
     method: "POST",
     headers: {
@@ -93,7 +94,6 @@ export const deleteVideos = (videoID, roomID, socket) => dispatch => {
         type: GET_VIDEOS,
         payload: data.data
       });
-      console.log("Delete Actions");
       socket.emit("VideoSuccessFullyDeleted", "delete");
     })
     .catch(err => {

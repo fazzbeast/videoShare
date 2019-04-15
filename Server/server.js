@@ -26,10 +26,7 @@ const io = require("socket.io")(server);
 io.on("connection", socket => {
   console.log("New Connection");
   socket.on("joinRoom", function(newRoom) {
-    socket.leave(socket.room);
     socket.join(newRoom);
-    socket.room = newRoom;
-    console.log(newRoom);
   });
 
   socket.on("seekPlayTime", function(playTime) {
@@ -39,11 +36,9 @@ io.on("connection", socket => {
     socket.broadcast.to(socket.room).emit("pauseplay", pauseplay);
   });
   socket.on("newVideo", function(newVideo) {
-    console.log("server Add");
     socket.broadcast.to(socket.room).emit("addedNewVideo", "newVideo");
   });
   socket.on("VideoSuccessFullyDeleted", function() {
-    console.log("server delete");
     socket.broadcast.to(socket.room).emit("videoDeleted", "stuff");
   });
 });
@@ -107,7 +102,6 @@ app.post("/videoQueue/add", (req, res, next) => {
     [url, videoID, roomID, position],
     (error, results) => {
       if (error) {
-        console.log(error);
         return res.status(400).send(error);
       } else {
         pool.query(
@@ -115,7 +109,6 @@ app.post("/videoQueue/add", (req, res, next) => {
           [roomID],
           (error2, results2) => {
             if (error) {
-              console.log(error2);
               return res.status(400).send(error2);
             } else {
               return res.status(200).json(results2.rows);
