@@ -21,11 +21,12 @@ import {
   getVideos,
   deleteVideos,
   addToRecentlyPlayed,
-  deleteRecentlyPlayed
+  deleteRecentlyPlayed,
+  updateRecentlyPlayed
 } from "../actions/userActions";
 import VideoRecentList from "../VideoRecentList/VideoRecentList";
+
 var socket;
-//TODO: add previously watched videos section
 class VideoQueue extends Component {
   constructor(props) {
     super(props);
@@ -59,6 +60,7 @@ class VideoQueue extends Component {
       this.player.seekTo(playtime.time);
     });
     socket.on("pauseplay", pauseplay => {
+      console.log("pause");
       this.setState({ playing: pauseplay.playing, played: pauseplay.played });
     });
     socket.on("addedNewVideo", () => {
@@ -66,6 +68,9 @@ class VideoQueue extends Component {
     });
     socket.on("videoDeleted", () => {
       this.props.getVideos(this.props.match.params.id);
+    });
+    socket.on("updatedRecentlyPlayed", data => {
+      this.props.newRecentlyPlayed(data);
     });
   }
   componentDidUpdate(prevProps, prevState) {
@@ -117,6 +122,9 @@ class VideoQueue extends Component {
         socket
       );
       this.props.deleteRecent(oldRecent);
+      socket.emit("newRecentlyPlayed", {
+        recentlyPlayed: oldRecent
+      });
     }
   };
 
@@ -188,6 +196,11 @@ class VideoQueue extends Component {
         this.props.match.params.id,
         socket
       );
+      let currentRecentlyPlayed = [...this.props.recentlyPlayed];
+      currentRecentlyPlayed.push(temp[0]);
+      socket.emit("newRecentlyPlayed", {
+        recentlyPlayed: currentRecentlyPlayed
+      });
     }
   };
 
@@ -216,7 +229,7 @@ class VideoQueue extends Component {
         onDelete={this.onDelete}
       />
     ));
-    const recentData = this.props.recentlyPlayed;
+    const recentData = this.props.recentlyPlayed || [];
     let recent = recentData.map((data, idx) => (
       <VideoRecentList
         Data={data}
@@ -320,6 +333,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     deleteRecent: videos => {
       dispatch(deleteRecentlyPlayed(videos));
+    },
+    newRecentlyPlayed: videos => {
+      dispatch(updateRecentlyPlayed(videos));
     }
   };
 };

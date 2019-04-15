@@ -24,22 +24,30 @@ server = app.listen(process.env.PORT || 5000, () =>
 );
 const io = require("socket.io")(server);
 io.on("connection", socket => {
+  var address;
   console.log("New Connection");
   socket.on("joinRoom", function(newRoom) {
-    socket.join(newRoom);
+    address = newRoom;
+    socket.join(address);
   });
 
   socket.on("seekPlayTime", function(playTime) {
-    socket.broadcast.to(socket.room).emit("NewCurrentTime", playTime);
+    socket.broadcast.to(address).emit("NewCurrentTime", playTime);
   });
   socket.on("pauseplayemit", function(pauseplay) {
-    socket.broadcast.to(socket.room).emit("pauseplay", pauseplay);
+    socket.broadcast.to(address).emit("pauseplay", pauseplay);
   });
   socket.on("newVideo", function(newVideo) {
-    socket.broadcast.to(socket.room).emit("addedNewVideo", "newVideo");
+    socket.broadcast.to(address).emit("addedNewVideo", "newVideo");
   });
   socket.on("VideoSuccessFullyDeleted", function() {
-    socket.broadcast.to(socket.room).emit("videoDeleted", "stuff");
+    socket.broadcast.to(address).emit("videoDeleted", "stuff");
+  });
+  socket.on("newRecentlyPlayed", function(data) {
+    console.log(data);
+    socket.broadcast
+      .to(address)
+      .emit("updatedRecentlyPlayed", data.recentlyPlayed);
   });
 });
 

@@ -12,10 +12,17 @@ import {
   DELETE_VIDEO,
   ADD_VIDEOS,
   ADD_RECENTLY_PLAYED,
-  DELETE_RECENTLY_PLAYED
+  DELETE_RECENTLY_PLAYED,
+  UPDATE_RECENTLY_PLAYED
 } from "./types";
 import axios from "axios";
 
+export const updateRecentlyPlayed = videos => dispatch => {
+  dispatch({
+    type: UPDATE_RECENTLY_PLAYED,
+    payload: videos
+  });
+};
 export const deleteRecentlyPlayed = videos => dispatch => {
   dispatch({
     type: DELETE_RECENTLY_PLAYED,
