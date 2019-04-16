@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const app = express();
 const cors = require("cors");
 var bodyParser = require("body-parser");
@@ -18,6 +19,8 @@ app.use(cors());
 require("./passport")(passport);
 // use bodyParser to parse application/json content-type
 app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname, "client/build")));
 
 server = app.listen(process.env.PORT || 5000, () =>
   console.log("Listening on port 5000")
