@@ -17,15 +17,9 @@ const VideoQueueList = React.forwardRef(
     useImperativeHandle(ref, () => ({
       getNode: () => elementRef.current
     }));
-    const titleFetch = fetch(
-      `http://noembed.com/embed?url=${Data.url.replace(":", "%3A")}`
-    ).then(data => {
-      return data;
-    });
     return (
       <div ref={elementRef} style={{ opacity: opacity }}>
         <ListGroupItem style={{ height: "102px" }} className="items ">
-          <div>{}</div>
           <div className="thumbnail m-auto">
             <ReactPlayer
               light={true}
