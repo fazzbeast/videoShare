@@ -20,7 +20,7 @@ require("./passport")(passport);
 // use bodyParser to parse application/json content-type
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "../Client/build")));
 
 server = app.listen(process.env.PORT || 5000, () =>
   console.log("Listening on port 5000")
