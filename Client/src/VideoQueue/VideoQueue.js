@@ -61,7 +61,6 @@ class VideoQueue extends Component {
       this.player.seekTo(playtime.time);
     });
     socket.on("pauseplay", pauseplay => {
-      console.log("pause");
       this.setState({ playing: pauseplay.playing, played: pauseplay.played });
     });
     socket.on("addedNewVideo", () => {
