@@ -1,24 +1,24 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./store/store.js";
-import { DragDropContextProvider } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+// import * as serviceWorker from "./serviceWorker";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store/store.js';
+import { DragDropContextProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <DragDropContextProvider backend={HTML5Backend}>
-        <App />
-      </DragDropContextProvider>
-    </BrowserRouter>
-  </Provider>,
-  document.getElementById("root")
+	<Provider store={store}>
+		<BrowserRouter>
+			<DragDropContextProvider backend={HTML5Backend}>
+				<App />
+			</DragDropContextProvider>
+		</BrowserRouter>
+	</Provider>,
+	document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

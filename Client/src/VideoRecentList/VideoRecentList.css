@@ -1,6 +1,6 @@
 .VideoRecentMain {
     display: flex;
-    overflow: scroll;
+    overflow: auto;
     flex-direction: row;
 }
 
