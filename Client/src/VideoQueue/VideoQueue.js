@@ -35,7 +35,7 @@ class VideoQueue extends Component {
 			duration: 0,
 			endpoint: 'http://localhost:5000/'
 		};
-		socket = io();
+		socket = io(this.endpoint);
 	}
 	static getDerivedStateFromProps(props, state) {
 		if (props.videos !== state.videos) {
@@ -86,8 +86,23 @@ class VideoQueue extends Component {
 	handleKeyPress = (event) => {
 		let oldVideosQueue = [ ...this.state.queue ];
 		let oldVideosMain = [ ...this.state.videos ];
-		if (event.key === 'Enter') {
+		if (event.key === 'Enter' && event.target.value.length > 0) {
 			const url = event.target.value;
+			const newData = { url: url, queueOrder: this.state.videos.length + 2 };
+			oldVideosMain.push(newData);
+			if (oldVideosMain.length >= 2) {
+				oldVideosQueue.push(newData);
+			}
+			this.setState({ input: '' });
+			this.props.updateVideos(oldVideosMain, this.props.match.params.id, socket);
+		}
+	};
+
+	addToQueue = (event) => {
+		let oldVideosQueue = [ ...this.state.queue ];
+		let oldVideosMain = [ ...this.state.videos ];
+		const url = this.state.input;
+		if (url.length > 0) {
 			const newData = { url: url, queueOrder: this.state.videos.length + 2 };
 			oldVideosMain.push(newData);
 			if (oldVideosMain.length >= 2) {
@@ -263,7 +278,11 @@ class VideoQueue extends Component {
 						<div className="mb-2 mr-2">
 							<InputGroup>
 								<InputGroupAddon addonType="prepend">
-									<InputGroupText>Add to Queue</InputGroupText>
+									<InputGroupText
+										onClick={this.state.input.length > 0 ? this.addToQueue : null}
+										className="queueButton">
+										Add to Queue
+									</InputGroupText>
 								</InputGroupAddon>
 								<Input
 									onKeyPress={this.handleKeyPress}

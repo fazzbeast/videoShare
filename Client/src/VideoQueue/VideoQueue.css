@@ -44,3 +44,12 @@
 .backToRoom:hover>.fa-angle-left {
     transform: translateX(-2px);
 }
+
+.queueButton:hover {
+    cursor: pointer !important;
+}
+
+.queueButton:active {
+    background-color: #666869;
+    color: whitesmoke
+}
