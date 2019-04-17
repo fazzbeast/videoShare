@@ -30,8 +30,11 @@ io.on('connection', (socket) => {
 	socket.on('joinRoom', function(newRoom) {
 		address = newRoom;
 		socket.join(address);
+		socket.broadcast.to(address).emit('justJoined', socket.id);
 	});
-
+	socket.on('justJoinedData', function(data) {
+		socket.to(data.id).emit('justJoinedPlayerData', data);
+	});
 	socket.on('seekPlayTime', function(playTime) {
 		socket.broadcast.to(address).emit('NewCurrentTime', playTime);
 	});

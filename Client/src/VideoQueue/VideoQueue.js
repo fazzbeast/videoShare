@@ -8,7 +8,7 @@ import VideoQueueList from './../VideoQueueList/VideoQueueList';
 import VideoControls from '../videoControls/videoControls';
 import screenfull from 'screenfull';
 import { findDOMNode } from 'react-dom';
-import io from 'socket.io-client';
+import socketIOClient from 'socket.io-client';
 import { connect } from 'react-redux';
 import {
 	addVideos,
@@ -33,9 +33,11 @@ class VideoQueue extends Component {
 			playing: false,
 			played: 0,
 			duration: 0,
-			endpoint: 'http://localhost:5000/'
+			endpoint: 'http://localhost:5000/',
+			initial: {}
 		};
-		socket = io(this.endpoint);
+		// socket = io();
+		socket = socketIOClient(this.state.endpoint);
 	}
 	static getDerivedStateFromProps(props, state) {
 		if (props.videos !== state.videos) {
@@ -65,6 +67,25 @@ class VideoQueue extends Component {
 		});
 		socket.on('updatedRecentlyPlayed', (data) => {
 			this.props.newRecentlyPlayed(data);
+		});
+		socket.on('justJoined', (id) => {
+			socket.emit('justJoinedData', {
+				id: id,
+				playing: this.state.playing,
+				played: this.state.played,
+				recentlyPlayed: this.props.recentlyPlayed
+			});
+		});
+		socket.on('justJoinedPlayerData', (data) => {
+			let initial = {
+				playing: data.playing,
+				played: data.played
+			};
+			this.setState({
+				initial: initial,
+				playing: data.playing
+			});
+			this.props.newRecentlyPlayed(data.recentlyPlayed);
 		});
 	}
 	componentDidUpdate(prevProps, prevState) {
@@ -204,6 +225,12 @@ class VideoQueue extends Component {
 	onClickRedirect = () => {
 		this.props.history.push('/Rooms');
 	};
+
+	onReady = () => {
+		this.player.seekTo(parseFloat(this.state.initial.played));
+		console.log(this.state.initial.playing);
+		this.setState({ playing: this.state.initial.playing });
+	};
 	render() {
 		const moveCard = (dragIndex, hoverIndex) => {
 			const dragCard = this.state.queue[dragIndex];
@@ -255,6 +282,8 @@ class VideoQueue extends Component {
 								onProgress={this.onProgress}
 								onDuration={this.onDuration}
 								onEnded={this.onNext}
+								controls={true}
+								onReady={() => this.onReady}
 							/>
 						</div>
 						<VideoControls
