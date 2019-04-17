@@ -16,7 +16,7 @@ class RoomsCard extends Component {
 	};
 
 	add = (id) => {
-		const name = `http://localhost:3000/VideoQueue/${id}`;
+		const name = window.location.origin + `/VideoQueue/${id}`;
 		return <input type="text" value={name} className="float-right" readOnly onClick={(e) => e.stopPropagation()} />;
 	};
 
