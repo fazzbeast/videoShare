@@ -8,7 +8,7 @@ import VideoQueueList from './../VideoQueueList/VideoQueueList';
 import VideoControls from '../videoControls/videoControls';
 import screenfull from 'screenfull';
 import { findDOMNode } from 'react-dom';
-import socketIOClient from 'socket.io-client';
+import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import {
 	addVideos,
@@ -36,8 +36,8 @@ class VideoQueue extends Component {
 			endpoint: 'http://localhost:5000/',
 			initial: {}
 		};
-		// socket = io();
-		socket = socketIOClient(this.state.endpoint);
+		socket = io();
+		// socket = socketIOClient(this.state.endpoint);
 	}
 	static getDerivedStateFromProps(props, state) {
 		if (props.videos !== state.videos) {
