@@ -1,30 +1,43 @@
 import React, { Component } from 'react';
-import { ListGroupItem, Button } from 'reactstrap';
+import { ListGroupItem } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
-import { FaShareSquare, FaTrashAlt } from 'react-icons/fa';
+import { FaShareSquare, FaTrashAlt, FaRegClipboard, FaClipboardCheck } from 'react-icons/fa';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 class RoomsCard extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			isItemContentVisible: {}
+			isItemContentVisible: {},
+			clipBoardClicked: {}
 		};
 	}
 
 	onClick = (id) => {
 		this.props.history.push(`/VideoQueue/${id}`);
 	};
+	changeClip = (e, id) => {
+		e.stopPropagation();
+		this.setState({
+			clipBoardClicked: {
+				...this.state.clipBoardClicked,
+				[id]: true
+			}
+		});
+	};
 
 	add = (id) => {
 		const name = window.location.origin + `/VideoQueue/${id}`;
 		return (
 			<React.Fragment>
-				<CopyToClipboard text={name}>
-					<Button className="float-right mx-2" onClick={(e) => e.stopPropagation()}>
-						Copy to Clipboard
-					</Button>
-				</CopyToClipboard>
+				{this.state.clipBoardClicked[id] ? (
+					<FaClipboardCheck className="float-right mx-2 clip" onClick={(e) => e.stopPropagation()} />
+				) : (
+					<CopyToClipboard text={name}>
+						<FaRegClipboard className="float-right mx-2 clip" onClick={(e) => this.changeClip(e, id)} />
+					</CopyToClipboard>
+				)}
+
 				<input type="text" value={name} className="float-right" readOnly onClick={(e) => e.stopPropagation()} />
 			</React.Fragment>
 		);
