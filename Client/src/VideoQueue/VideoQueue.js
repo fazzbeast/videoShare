@@ -228,7 +228,6 @@ class VideoQueue extends Component {
 
 	onReady = () => {
 		this.player.seekTo(parseFloat(this.state.initial.played));
-		console.log(this.state.initial.playing);
 		this.setState({ playing: this.state.initial.playing });
 	};
 	render() {

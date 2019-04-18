@@ -16,7 +16,7 @@ module.exports = function sendEmail(req, email, name, token, callback) {
 		subject: 'Confirm your account for VideoShare',
 		text: `Thank you ${name} for signing up for VideoShare!
 
-        Please verify your account by clicking the link: http://localhost:3000/user/confirmed/${token}
+        Please verify your account by clicking the link: https://youtube-date-night.herokuapp.com/user/confirmed/${token}
         `
 	};
 
