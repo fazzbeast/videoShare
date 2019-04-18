@@ -107,7 +107,7 @@ class VideoQueue extends Component {
 	handleKeyPress = (event) => {
 		let oldVideosQueue = [ ...this.state.queue ];
 		let oldVideosMain = [ ...this.state.videos ];
-		if (event.key === 'Enter' && event.target.value.length > 0) {
+		if (event.key === 'Enter' && event.target.value.length > 0 && ReactPlayer.canPlay(event.target.value)) {
 			const url = event.target.value;
 			const newData = { url: url, queueOrder: this.state.videos.length + 2 };
 			oldVideosMain.push(newData);
@@ -123,7 +123,7 @@ class VideoQueue extends Component {
 		let oldVideosQueue = [ ...this.state.queue ];
 		let oldVideosMain = [ ...this.state.videos ];
 		const url = this.state.input;
-		if (url.length > 0) {
+		if (url.length > 0 && ReactPlayer.canPlay(url)) {
 			const newData = { url: url, queueOrder: this.state.videos.length + 2 };
 			oldVideosMain.push(newData);
 			if (oldVideosMain.length >= 2) {
