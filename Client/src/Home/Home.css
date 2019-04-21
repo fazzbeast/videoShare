@@ -17,6 +17,7 @@
     background-color: #212529;
     height: 75vh;
     width: 100%;
+    padding-top: 50px;
 
 }
 
@@ -27,4 +28,13 @@
     margin-top: 25px;
     height: 400px;
     flex: 0 0 50%; */
+}
+
+.titleText {
+    position: relative;
+    margin-top: 50px;
+}
+
+li {
+    margin-bottom: 50px;
 }
