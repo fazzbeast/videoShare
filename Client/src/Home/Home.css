@@ -17,15 +17,14 @@
     background-color: #212529;
     height: 75vh;
     width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+
 }
 
 .explain {
-    padding: 25px;
+    position: absolute;
+    /* padding: 25px;
     border-radius: 10px;
     margin-top: 25px;
     height: 400px;
-    flex: 0 0 50%;
+    flex: 0 0 50%; */
 }

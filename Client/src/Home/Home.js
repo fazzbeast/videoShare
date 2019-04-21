@@ -15,7 +15,21 @@ class Home extends Component {
 					</Container>
 				</Jumbotron>
 				<div className="mainBody">
-					<div className="explain bg-light ">a</div>
+					<h1 className="text-light text-center p-5">Watch videos together from anywhere in the world!</h1>
+					<ul className="text-light text-center list-unstyled w-50 m-auto">
+						<div className="row">
+							<li className="col">
+								<h3>Stay Synced</h3>
+							</li>
+							<li className="col">
+								<h3>Unlimted Private Rooms</h3>
+							</li>
+							<div className="w-100" />
+							<li className="col">
+								<h3>Share with Everyone... or not</h3>
+							</li>
+						</div>
+					</ul>
 				</div>
 			</div>
 		);
