@@ -3,9 +3,29 @@
 }
 
 .jumbo {
-    height: 400px;
-    background-image: url('https://cdn.pixabay.com/photo/2016/01/15/12/02/editing-1141505_960_720.jpg');
-    background-position: bottom;
+    height: 500px;
+    background-image: url('../img/title.jpg');
+    /* background-position: 25% 75%; */
+    background-position: 0;
     background-size: cover;
     background-repeat: no-repeat;
+    color: #777;
+}
+
+.mainBody {
+    position: relative;
+    background-color: #212529;
+    height: 75vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.explain {
+    padding: 25px;
+    border-radius: 10px;
+    margin-top: 25px;
+    height: 400px;
+    flex: 0 0 50%;
 }
