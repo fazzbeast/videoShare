@@ -20,7 +20,7 @@ class Home extends Component {
 					</h1>
 					<ul className="text-light text-center list-unstyled w-50 m-auto">
 						<div className="row">
-							<li className="col mr-5">
+							<li className="col mr-5 mb-5">
 								<span>
 									<FaSyncAlt size="3em" className="mb-2" />
 								</span>
@@ -30,7 +30,7 @@ class Home extends Component {
 									everyone will experience all those changes together.{' '}
 								</p>
 							</li>
-							<li className="col">
+							<li className="col mb-5">
 								<span>
 									<FaDoorOpen size="3em" className="mb-2" />
 								</span>
