@@ -8,6 +8,7 @@ import PrivateRoute from '../PrivateRoute/PrivateRoute';
 import { loadUser } from '../actions/authActions';
 import store from '../store/store';
 import EmailConfirmed from '../EmailConfirmed/EmailConfirmed';
+import NotFound from '../NotFound/NotFound';
 class Routes extends Component {
 	componentDidMount() {
 		store.dispatch(loadUser());
@@ -25,6 +26,8 @@ class Routes extends Component {
 					<Route path="/VideoQueue/:id" component={VideoQueue} />
 					<Route path="/user/confirmed/:id" component={EmailConfirmed} />
 					<PrivateRoute exact path="/Rooms" component={Rooms} />
+					<Route path="/user/confirmed/:id" component={EmailConfirmed} />
+					<Route component={NotFound} />
 				</Switch>
 			</div>
 		);
