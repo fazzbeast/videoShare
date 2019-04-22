@@ -66,7 +66,7 @@ app.post(
 		check('password').not().isEmpty().withMessage('Must enter a password'),
 		check('password').isLength({ min: 8, max: 100 }).withMessage('Password must be between 8-100 characters long'),
 		check('password')
-			.matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, 'i')
+			.matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&].{8,}$/, 'i')
 			.withMessage('Password include one lowercase character, one uppercase, a number, and a special character'),
 		check('password2').not().isEmpty().withMessage('Must re-enter password'),
 		check('password')
@@ -81,7 +81,7 @@ app.post(
 	],
 	(req, res, next) => {
 		const errors = validationResult(req);
-
+		console.log(errors.array());
 		if (!errors.isEmpty()) {
 			return res.status(422).json({ errors: errors.array() });
 		}
