@@ -50,6 +50,10 @@ io.on('connection', (socket) => {
 	socket.on('newRecentlyPlayed', function(data) {
 		socket.broadcast.to(address).emit('updatedRecentlyPlayed', data.recentlyPlayed);
 	});
+
+	socket.on('sendOutSync', function(data) {
+		socket.broadcast.to(address).emit('serverSync', data);
+	});
 });
 
 app.use('/auth', auth);

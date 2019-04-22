@@ -87,6 +87,10 @@ class VideoQueue extends Component {
 			});
 			this.props.newRecentlyPlayed(data.recentlyPlayed);
 		});
+		socket.on('serverSync', (data) => {
+			this.setState({ playing: data.playing });
+			this.player.seekTo(data.played);
+		});
 	}
 	componentDidUpdate(prevProps, prevState) {
 		if (prevState.videos.length !== this.state.videos.length) {
@@ -230,6 +234,14 @@ class VideoQueue extends Component {
 		this.player.seekTo(parseFloat(this.state.initial.played));
 		this.setState({ playing: this.state.initial.playing });
 	};
+
+	onSync = () => {
+		this.setState({ playing: false });
+		socket.emit('sendOutSync', {
+			played: this.state.played,
+			playing: false
+		});
+	};
 	render() {
 		const moveCard = (dragIndex, hoverIndex) => {
 			const dragCard = this.state.queue[dragIndex];
@@ -292,6 +304,7 @@ class VideoQueue extends Component {
 							onSeekChange={this.onSeekChange}
 							onSeekMouseUp={this.onSeekMouseUp}
 							onNext={this.onNext}
+							onSync={this.onSync}
 							{...this.state}
 						/>
 						<div>

@@ -30,6 +30,9 @@ export default function VideoControls(props) {
 				<Button className="btn-primary ml-2" onClick={props.onNext}>
 					Next
 				</Button>
+				<Button className="btn-primary ml-2" onClick={props.onSync}>
+					Sync All
+				</Button>
 			</div>
 		</div>
 	);
