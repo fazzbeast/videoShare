@@ -9,13 +9,13 @@
     background-position: 0;
     background-size: cover;
     background-repeat: no-repeat;
-    color: #777;
+    color: rgb(93, 66, 246);
 }
 
 .mainBody {
     position: relative;
-    background-color: #212529;
-    height: 75vh;
+    background-color: #3a4149;
+    height: 60vh;
     width: 100%;
     padding-top: 50px;
 
