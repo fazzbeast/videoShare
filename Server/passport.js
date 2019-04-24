@@ -31,11 +31,11 @@ module.exports = function(passport) {
 			},
 			(email, password, done) => {
 				pool.query('select * from "user_info" where "email" = $1', [ email ], (err, data) => {
-					if (err) {
+					if (err || !data.rows.isEmailConfirmed) {
 						return done(null, false, { message: 'Email not Found', error: err });
 					}
 					bcrypt.compare(password, data.rows[0].password, (err, isMatch) => {
-						if (err) {
+						if (err || isMatch === false) {
 							return done(null, false, { message: 'Password or Email incorrect', error: err });
 						} else {
 							return done(null, data, { message: 'Logged in Successfully' });

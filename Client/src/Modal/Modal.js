@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap';
 import './Modal.css';
 import { connect } from 'react-redux';
-import { registerUser, loginUser, resetForm } from './../actions/userActions';
+import { registerUser, loginUser, resetForm, login_error_reset } from './../actions/userActions';
 class ModalClass extends React.Component {
 	constructor(props) {
 		super(props);
@@ -24,7 +24,7 @@ class ModalClass extends React.Component {
 	}
 	componentDidUpdate(prevProps) {
 		if (prevProps !== this.props) {
-			return console.log(this.props.errors);
+			return;
 		}
 	}
 	toggle = () => {
@@ -62,7 +62,6 @@ class ModalClass extends React.Component {
 
 	onFormSubmitVerified = () => {
 		this.props.reset();
-
 		this.setState({
 			formValues: {
 				name: '',
@@ -82,16 +81,16 @@ class ModalClass extends React.Component {
 	onLoginSubmit = (event) => {
 		event.preventDefault();
 		this.props.loginSubmit(this.state.loginValues);
-		this.toggle();
 	};
 	render() {
+		console.log(this.state);
 		const register = (
 			<React.Fragment>
 				<ModalHeader toggle={this.toggle}>Register a New Account</ModalHeader>
 
 				<ModalBody>
-					{this.props.uploadSuccess ? (
-						this.onFormSubmitVerified
+					{this.props.userExists ? (
+						this.onFormSubmitVerified()
 					) : this.props.errors !== undefined && this.props.errors.length ? (
 						<div className="mb-3">
 							{this.props.errors.map((data) => (
@@ -181,6 +180,15 @@ class ModalClass extends React.Component {
 			<React.Fragment>
 				<ModalHeader toggle={this.toggle}>Login</ModalHeader>
 				<ModalBody>
+					{this.props.userExists ? (
+						this.onFormSubmitVerified()
+					) : this.props.loginError ? (
+						<div className="mb-3">
+							<Alert color="danger" className="mb-0">
+								{this.props.loginError.msg}
+							</Alert>
+						</div>
+					) : null}
 					<div className="input-group flex-nowrap mb-3">
 						<div className="input-group-prepend">
 							<span className="input-group-text" id="addon-wrapping">
@@ -238,7 +246,9 @@ class ModalClass extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		uploadSuccess: state.userReducer.uploadSuccess,
-		errors: state.errors.msg
+		errors: state.errors.msg,
+		userExists: state.Auth.isAuthenticated,
+		loginError: state.Auth.error
 	};
 };
 
@@ -252,6 +262,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		reset: () => {
 			dispatch(resetForm());
+			dispatch(login_error_reset());
 		}
 	};
 };

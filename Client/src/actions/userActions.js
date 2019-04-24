@@ -14,10 +14,17 @@ import {
 	ADD_RECENTLY_PLAYED,
 	DELETE_RECENTLY_PLAYED,
 	UPDATE_RECENTLY_PLAYED,
-	RESET_FORM
+	RESET_FORM,
+	LOGIN_ERROR
 } from './types';
 import axios from 'axios';
 
+export const login_error_reset = () => (dispatch) => {
+	dispatch({
+		type: LOGIN_ERROR,
+		payload: false
+	});
+};
 export const resetForm = () => (dispatch) => {
 	dispatch({
 		type: RESET_FORM
@@ -194,7 +201,16 @@ export const loginUser = (loginData) => (dispatch) => {
 				payload: data.data.data
 			});
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			const errors = {
+				msg: 'Email or Password is incorrect',
+				status: 401
+			};
+			dispatch({
+				type: LOGIN_ERROR,
+				payload: errors
+			});
+		});
 };
 
 export const logoutUser = () => (dispatch) => {
