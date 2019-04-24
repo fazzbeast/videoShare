@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { getEmailToken } from '../actions/userActions';
 const EmailConfirmed = (props) => {
 	const token = props.match.params.id;
-
+	console.log(props.userExists);
 	return (
 		<div>
 			{props.token(token)}
-			<Redirect to="/" />
+			{props.userExists ? <Redirect to="/" /> : <div>Error with Email Token</div>}
 		</div>
 	);
 };
@@ -18,4 +18,9 @@ const mapDispatchToProps = (dispatch) => {
 		token: (token) => dispatch(getEmailToken(token))
 	};
 };
-export default connect(null, mapDispatchToProps)(withRouter(EmailConfirmed));
+const mapStateToProps = (state, ownProps) => {
+	return {
+		userExists: state.Auth.token
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EmailConfirmed));
