@@ -256,7 +256,7 @@ export const getRooms = (roomData) => (dispatch, getState) => {
 };
 
 export const getEmailToken = (token) => (dispatch) => {
-	axios.get(`/auth/confirmation/${token}`).then((err, data) => {
+	axios.get(`/auth/confirmation/${token}`).then((data, err) => {
 		if (err) {
 			dispatch({
 				type: AUTH_ERROR,

@@ -29,7 +29,6 @@ const registerUser = async (req, name, email, password, matchPassword, res) => {
 			}
 			emailSender(req, email, name, emailToken, (err, data) => {
 				if (err) {
-					console.log(err);
 					return res.status(401).send({ message: 'Error sending email', error: err });
 				}
 				return res.status(200).send({ message: 'Registration Complete' });
