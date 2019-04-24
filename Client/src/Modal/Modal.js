@@ -1,239 +1,259 @@
-import React from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import "./Modal.css";
-import { connect } from "react-redux";
-import { registerUser, loginUser } from "./../actions/userActions";
+import React from 'react';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap';
+import './Modal.css';
+import { connect } from 'react-redux';
+import { registerUser, loginUser, resetForm } from './../actions/userActions';
 class ModalClass extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: true,
-      login: false,
-      register: false,
-      formValues: {
-        name: "",
-        email: "",
-        password: "",
-        password2: ""
-      },
-      loginValues: {
-        email: "",
-        password: ""
-      }
-    };
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			modal: true,
+			login: false,
+			register: false,
+			formValues: {
+				name: '',
+				email: '',
+				password: '',
+				password2: ''
+			},
+			loginValues: {
+				email: '',
+				password: ''
+			}
+		};
+	}
+	componentDidUpdate(prevProps) {
+		if (prevProps !== this.props) {
+			return console.log(this.props.errors);
+		}
+	}
+	toggle = () => {
+		this.setState((prevState) => ({
+			modal: !prevState.modal
+		}));
+		if (this.props.signupClicked) {
+			this.props.onClickSignUp();
+		}
+		if (this.props.loginClicked) {
+			this.props.onClickLogin();
+		}
+	};
 
-  toggle = () => {
-    this.setState(prevState => ({
-      modal: !prevState.modal
-    }));
-    if (this.props.signupClicked) {
-      this.props.onClickSignUp();
-    }
-    if (this.props.loginClicked) {
-      this.props.onClickLogin();
-    }
-  };
+	onChangeEventRegister = (event) => {
+		let formInputs = {
+			...this.state.formValues
+		};
+		formInputs[event.target.name] = event.target.value;
+		this.setState({ formValues: formInputs });
+	};
 
-  onChangeEventRegister = event => {
-    let formInputs = {
-      ...this.state.formValues
-    };
-    formInputs[event.target.name] = event.target.value;
-    this.setState({ formValues: formInputs });
-  };
+	onChangeLogin = (event) => {
+		let updatedLoginValues = {
+			...this.state.loginValues
+		};
+		updatedLoginValues[event.target.name] = event.target.value;
+		this.setState({ loginValues: updatedLoginValues });
+	};
 
-  onChangeLogin = event => {
-    let updatedLoginValues = {
-      ...this.state.loginValues
-    };
-    updatedLoginValues[event.target.name] = event.target.value;
-    this.setState({ loginValues: updatedLoginValues });
-  };
+	onRegisterSubmit = (event) => {
+		event.preventDefault();
+		this.props.formSubmit(this.state.formValues);
+	};
 
-  onRegisterSubmit = event => {
-    event.preventDefault();
-    this.props.formSubmit(this.state.formValues);
-    this.setState({
-      formValues: {
-        name: "",
-        email: "",
-        password: "",
-        password2: ""
-      },
-      loginValues: {
-        email: "",
-        password: ""
-      }
-    });
-    this.toggle();
-  };
+	onFormSubmitVerified = () => {
+		this.props.reset();
 
-  onLoginSubmit = event => {
-    event.preventDefault();
-    this.props.loginSubmit(this.state.loginValues);
-    this.toggle();
-  };
-  render() {
-    const register = (
-      <React.Fragment>
-        <ModalHeader toggle={this.toggle}>Register a New Account</ModalHeader>
-        <ModalBody>
-          <div className="input-group flex-nowrap mb-3">
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="addon-wrapping">
-                Name
-              </span>
-            </div>
-            <input
-              name="name"
-              type="text"
-              className="form-control"
-              placeholder="Name"
-              aria-label="Username"
-              aria-describedby="addon-wrapping"
-              onChange={event => this.onChangeEventRegister(event)}
-            />
-          </div>
-          <div className="input-group flex-nowrap mb-3">
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="addon-wrapping">
-                Email
-              </span>
-            </div>
-            <input
-              name="email"
-              type="text"
-              className="form-control"
-              placeholder="Email"
-              aria-label="Username"
-              aria-describedby="addon-wrapping"
-              onChange={event => this.onChangeEventRegister(event)}
-            />
-          </div>
-          <div className="input-group flex-nowrap mb-3">
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="addon-wrapping">
-                Password
-              </span>
-            </div>
-            <input
-              name="password"
-              type="password"
-              className="form-control"
-              placeholder="Password"
-              aria-label="Username"
-              aria-describedby="addon-wrapping"
-              onChange={event => this.onChangeEventRegister(event)}
-            />
-          </div>
-          <div className="input-group flex-nowrap mb-3">
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="addon-wrapping">
-                Re-enter Password
-              </span>
-            </div>
-            <input
-              name="password2"
-              type="password"
-              className="form-control"
-              placeholder="Password"
-              aria-label="Username"
-              aria-describedby="addon-wrapping"
-              onChange={event => this.onChangeEventRegister(event)}
-            />
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={this.onRegisterSubmit}>
-            Sign-up
-          </Button>{" "}
-          <Button color="secondary" onClick={this.toggle}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </React.Fragment>
-    );
+		this.setState({
+			formValues: {
+				name: '',
+				email: '',
+				password: '',
+				password2: ''
+			},
+			loginValues: {
+				email: '',
+				password: ''
+			}
+		});
 
-    const login = (
-      <React.Fragment>
-        <ModalHeader toggle={this.toggle}>Login</ModalHeader>
-        <ModalBody>
-          <div className="input-group flex-nowrap mb-3">
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="addon-wrapping">
-                Email
-              </span>
-            </div>
-            <input
-              name="email"
-              type="text"
-              className="form-control"
-              placeholder="Email"
-              aria-label="Username"
-              aria-describedby="addon-wrapping"
-              onChange={event => this.onChangeLogin(event)}
-            />
-          </div>
-          <div className="input-group flex-nowrap mb-3">
-            <div className="input-group-prepend">
-              <span className="input-group-text" id="addon-wrapping">
-                Password
-              </span>
-            </div>
-            <input
-              name="password"
-              type="password"
-              className="form-control"
-              placeholder="Password"
-              aria-label="Username"
-              aria-describedby="addon-wrapping"
-              onChange={event => this.onChangeLogin(event)}
-            />
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={this.onLoginSubmit}>
-            Login
-          </Button>{" "}
-          <Button color="secondary" onClick={this.toggle}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </React.Fragment>
-    );
-    return (
-      <div>
-        <Modal
-          isOpen={this.state.modal}
-          toggle={this.toggle}
-          className={this.props.className}>
-          {" "}
-          {this.props.loginClicked ? login : register}{" "}
-        </Modal>
-      </div>
-    );
-  }
+		this.toggle();
+	};
+
+	onLoginSubmit = (event) => {
+		event.preventDefault();
+		this.props.loginSubmit(this.state.loginValues);
+		this.toggle();
+	};
+	render() {
+		const register = (
+			<React.Fragment>
+				<ModalHeader toggle={this.toggle}>Register a New Account</ModalHeader>
+
+				<ModalBody>
+					{this.props.uploadSuccess ? (
+						this.onFormSubmitVerified
+					) : this.props.errors !== undefined && this.props.errors.length ? (
+						<div className="mb-3">
+							{this.props.errors.map((data) => (
+								<Alert color="danger" className="mb-0">
+									{data.msg}
+								</Alert>
+							))}
+						</div>
+					) : null}
+					<div className="input-group flex-nowrap mb-3">
+						<div className="input-group-prepend">
+							<span className="input-group-text" id="addon-wrapping">
+								Name
+							</span>
+						</div>
+						<input
+							name="name"
+							type="text"
+							className="form-control"
+							placeholder="Name"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+							onChange={(event) => this.onChangeEventRegister(event)}
+						/>
+					</div>
+					<div className="input-group flex-nowrap mb-3">
+						<div className="input-group-prepend">
+							<span className="input-group-text" id="addon-wrapping">
+								Email
+							</span>
+						</div>
+						<input
+							name="email"
+							type="text"
+							className="form-control"
+							placeholder="Email"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+							onChange={(event) => this.onChangeEventRegister(event)}
+						/>
+					</div>
+					<div className="input-group flex-nowrap mb-3">
+						<div className="input-group-prepend">
+							<span className="input-group-text" id="addon-wrapping">
+								Password
+							</span>
+						</div>
+						<input
+							name="password"
+							type="password"
+							className="form-control"
+							placeholder="Password"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+							onChange={(event) => this.onChangeEventRegister(event)}
+						/>
+					</div>
+					<div className="input-group flex-nowrap mb-3">
+						<div className="input-group-prepend">
+							<span className="input-group-text" id="addon-wrapping">
+								Re-enter Password
+							</span>
+						</div>
+						<input
+							name="password2"
+							type="password"
+							className="form-control"
+							placeholder="Password"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+							onChange={(event) => this.onChangeEventRegister(event)}
+						/>
+					</div>
+				</ModalBody>
+				<ModalFooter>
+					<Button color="primary" onClick={this.onRegisterSubmit}>
+						Sign-up
+					</Button>{' '}
+					<Button color="secondary" onClick={this.toggle}>
+						Cancel
+					</Button>
+				</ModalFooter>
+			</React.Fragment>
+		);
+
+		const login = (
+			<React.Fragment>
+				<ModalHeader toggle={this.toggle}>Login</ModalHeader>
+				<ModalBody>
+					<div className="input-group flex-nowrap mb-3">
+						<div className="input-group-prepend">
+							<span className="input-group-text" id="addon-wrapping">
+								Email
+							</span>
+						</div>
+						<input
+							name="email"
+							type="text"
+							className="form-control"
+							placeholder="Email"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+							onChange={(event) => this.onChangeLogin(event)}
+						/>
+					</div>
+					<div className="input-group flex-nowrap mb-3">
+						<div className="input-group-prepend">
+							<span className="input-group-text" id="addon-wrapping">
+								Password
+							</span>
+						</div>
+						<input
+							name="password"
+							type="password"
+							className="form-control"
+							placeholder="Password"
+							aria-label="Username"
+							aria-describedby="addon-wrapping"
+							onChange={(event) => this.onChangeLogin(event)}
+						/>
+					</div>
+				</ModalBody>
+				<ModalFooter>
+					<Button color="primary" onClick={this.onLoginSubmit}>
+						Login
+					</Button>{' '}
+					<Button color="secondary" onClick={this.toggle}>
+						Cancel
+					</Button>
+				</ModalFooter>
+			</React.Fragment>
+		);
+		return (
+			<div>
+				<Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+					{' '}
+					{this.props.loginClicked ? login : register}{' '}
+				</Modal>
+			</div>
+		);
+	}
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    active: ownProps.filter === state.visibilityFilter
-  };
+	return {
+		uploadSuccess: state.userReducer.uploadSuccess,
+		errors: state.errors.msg
+	};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    formSubmit: registerData => {
-      dispatch(registerUser(registerData));
-    },
-    loginSubmit: loginData => {
-      dispatch(loginUser(loginData));
-    }
-  };
+	return {
+		formSubmit: (registerData) => {
+			dispatch(registerUser(registerData));
+		},
+		loginSubmit: (loginData) => {
+			dispatch(loginUser(loginData));
+		},
+		reset: () => {
+			dispatch(resetForm());
+		}
+	};
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModalClass);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalClass);
