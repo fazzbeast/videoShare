@@ -88,6 +88,7 @@ router.get('/confirmation/:id', function(req, res, next) {
 
 router.post('/createRoom', function(req, res, next) {
 	passport.authenticate('jwt', { session: false }, (err, user, info) => {
+		console.log(user, err, info);
 		const id = user.rows[0].id;
 		if (err || !user) {
 			return res.status(500).json({

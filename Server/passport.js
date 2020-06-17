@@ -14,6 +14,7 @@ module.exports = function(passport) {
 		new JWTstrategy(opts, function(payload, done) {
 			const email = payload.user;
 			pool.query('SELECT "id" FROM "user_info" WHERE "email"= $1', [ email ], (err, results, fields) => {
+				console.log('jwt', results, err);
 				if (err) {
 					return done(err);
 				} else {
@@ -31,8 +32,12 @@ module.exports = function(passport) {
 			},
 			(email, password, done) => {
 				pool.query('select * from "user_info" where "email" = $1', [ email ], (err, data) => {
-					if (err || !data.rows.isEmailConfirmed) {
+					console.log(data.rows);
+					if (err) {
 						return done(null, false, { message: 'Email not Found', error: err });
+					}
+					if (!data.rows[0].isEmailConfirmed) {
+						return done(null, false, { message: 'Email Not Confirmed', error: err });
 					}
 					bcrypt.compare(password, data.rows[0].password, (err, isMatch) => {
 						if (err || isMatch === false) {

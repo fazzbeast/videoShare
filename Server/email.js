@@ -4,6 +4,8 @@ require('dotenv').config();
 module.exports = function sendEmail(req, email, name, token, callback) {
 	var transporter = nodemailer.createTransport({
 		host: 'smtp.zoho.com',
+		port: 587,
+		secure: false,
 		auth: {
 			user: process.env.EMAIL,
 			pass: process.env.PASSWORD

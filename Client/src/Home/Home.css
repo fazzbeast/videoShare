@@ -1,3 +1,8 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
 .lead {
     padding-left: 50px;
 }
@@ -15,7 +20,7 @@
 .mainBody {
     position: relative;
     background-color: #3a4149;
-    height: 60vh;
+    height: 100%;
     width: 100%;
     padding-top: 50px;
 

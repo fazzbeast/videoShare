@@ -83,7 +83,6 @@ class ModalClass extends React.Component {
 		this.props.loginSubmit(this.state.loginValues);
 	};
 	render() {
-		console.log(this.state);
 		const register = (
 			<React.Fragment>
 				<ModalHeader toggle={this.toggle}>Register a New Account</ModalHeader>
@@ -93,7 +92,7 @@ class ModalClass extends React.Component {
 						this.onFormSubmitVerified()
 					) : this.props.errors !== undefined && this.props.errors.length ? (
 						<div className="mb-3">
-							{this.props.errors.map((data) => (
+							{(this.props.errors || []).map((data) => (
 								<Alert color="danger" className="mb-0">
 									{data.msg}
 								</Alert>
